@@ -1,0 +1,76 @@
+	{% extends 'General/Base.html' %}
+	
+	{% block Contenido %}
+		<style>
+			.error {
+				font-family: verdana;
+				font-size: 10px;
+				font-weight: bold;
+				color: red;
+			}
+		</style>
+		<div class="span6">
+			<div class="box box-bordered">
+				<div class="box-title">
+					<h3><i class="icon-th-list"></i> Agregar Sintoma de Televisión</h3>
+				</div>
+				<div class="box-content nopadding">
+					<form action="#" method="POST" class="form-horizontal form-bordered" name="Form" id="Form">
+						<div class="control-group">
+							<label for="textfield" class="control-label">Sintoma</label>
+							<div class="controls">
+								<input type="text" name="Sintoma" id="Sintoma" placeholder="Sintoma" class="input-xlarge">
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="span5" id="CargarContenido">
+			<div class="box">
+				<div class="box-title">
+					<h3>
+						<i class="icon-table"></i>
+						Listado {{Titulo}}
+					</h3>
+				</div>
+				<div class="box-content nopadding">
+					<table class="table table-nomargin" style="font-family: verdana; font-size: 10px;">
+						<thead>
+							<tr>
+								<th>Sintoma de Television</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if Consulta|length>=1 %}
+								{% for Datos in Consulta %}
+									<tr>
+										<td>{{Datos.Sintoma}}</td>
+									</tr>
+								{% endfor %}
+							{% else %}
+								<tr>
+									<td><h5>No Hay Sintomas en la Base de Datos</h5></td>
+								</tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+		
+	{% block Script %}
+		{{Script|raw}}
+		<script>
+			$(document).ready(function () {
+				$('Form').submit(function () {
+					$('Form')[0].reset();
+				})
+			});
+		</script>
+	{% endblock %}

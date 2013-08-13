@@ -1,0 +1,97 @@
+	{% extends 'General/Base.html' %}
+	
+	{% block Contenido %}
+	
+		<div class="span12">
+			<div class="box box-color box-bordered" style="width: auto; min-width: 600px; max-width: 800px;">
+				<div class="box-title">
+					<h3 style="font-size: 14px;"><i class="icon-table"></i> Listado de Usuarios</h3>
+				</div>
+				<div class="box-content nopadding">
+					<table class="table table-nomargin table-bordered" style="font-family: verdana; font-size: 10px; width: auto;">
+						<thead>
+							<tr role="row">
+								<th style="width: 217px;">Usuario</th>
+								<th style="width: 189px;">Nombres</th>
+								<th style="width: 173px;">Apellidos</th>
+								<th style="width: 187px;">Proceso</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if Consulta|length >= 1 %}
+								{% for Datos in Consulta %}
+									<tr class="odd">
+										<td class="  sorting_1">{{Datos.Usuario}}</td>
+										<td class=" ">{{Datos.Nombres}}</td>
+										<td class="hidden-350 ">{{Datos.Apellidos}}</td>
+										<td class="hidden-480 ">
+											<div id="{{loop.index}}" data="{{Datos.Usuario|Codificacion}}">
+												<a href="#" class="Actualizar" id="Actualizar{{loop.index}}" data="{{Datos.EstadoAsignado}}">
+													<b class="Actualizar{{loop.index}}">
+													{% if Datos.EstadoAsignado == 'NO EXISTE' %}
+														<img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/done.gif" alt="Asignar" /> Asignar
+													{% elseif Datos.EstadoAsignado == 'INACTIVO' %}
+														<img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/done.gif" alt="Asignar" /> Asignar
+													{% elseif Datos.EstadoAsignado == 'ACTIVO' %}
+														<img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/delete.gif" alt="Des - Asignar" /> Des - Asignar
+													{% endif %}
+													</b>
+												</a>
+											</div>
+										</td>
+									</tr>
+								{% endfor %}
+							{% else %}
+								<tr class="odd">
+									<td class="sorting_1" colspan="4"><h4>No Hay Datos para Mostrar</h4></td>
+								</tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+			
+	{% endblock %}
+	
+	{% block Script %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.Actualizar').click(function() {
+					// Generamos las variables correspondientes
+					var IDPadre = $(this).parent().attr('id');
+					var Usuario = $(this).parent().attr('data');
+					var Estado = $(this).attr('data');
+					
+					//Mostramos la imagen de espera
+					$('.Actualizar' + IDPadre).html('<p><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/xeditable/loading.gif" alt="Cargando..." /></p>');
+					$.ajax({
+						type: "POST",
+						url: "{{NeuralRutasApp.RutaURL}}Ajax/AsignacionAsesores/{{'Index'|Codificacion}}/{{Fecha|Codificacion}}",
+						data: {Usuario : Usuario, Estado : Estado, Validacion : '{{Fecha|Codificacion}}'},
+						success: function() {
+							$('#' + IDPadre).empty();
+							if(Estado === "NO EXISTE") {
+								$('#' + IDPadre).append('<a href="#" class="Actualizar" id="Actualizar'+ IDPadre +'" data="ACTIVO"><b class="Actualizar' + IDPadre +'"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/delete.gif" alt="Des - Asignar" /> Des - Asignar</b></a>');
+							}
+							else {
+								if(Estado === "INACTIVO") {
+									$('#' + IDPadre).append('<a href="#" class="Actualizar" id="Actualizar'+ IDPadre +'" data="ACTIVO"><b class="Actualizar' + IDPadre +'"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/delete.gif" alt="Des - Asignar" /> Des - Asignar</b></a>');
+								}
+								else {
+									$('#' + IDPadre).append('<a href="#" class="Actualizar" id="Actualizar'+ IDPadre +'" data="INACTIVO"><b class="Actualizar' + IDPadre +'"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/done.gif.gif" alt="Asignar" /> Asignar</b></a>');
+								}
+							}
+							/*if(Estado == 'INACTIVO') {
+								$('#' + IDPadre).append('<a href="#" class="Actualizar" id="Actualizar'+ IDPadre +'" data="ACTIVO"><b class="Actualizar' + IDPadre +'"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/delete.gif" alt="Des - Asignar" /> Des - Asignar</b></a>');
+							}
+							if(Estado == 'ACTIVO') {
+								$('#' + IDPadre).append('<a href="#" class="Actualizar" id="Actualizar'+ IDPadre +'" data="INACTIVO"><b class="Actualizar' + IDPadre +'"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/plupload/done.gif.gif" alt="Asignar" /> Asignar</b></a>');
+							}*/
+							
+						}
+					});
+				});
+			});
+		</script>
+	{% endblock %}
