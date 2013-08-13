@@ -197,7 +197,6 @@
 				exit();
 			}
 		}
-		
 		public function Masivos($UserCod = false) {
 			if($UserCod == true) {
 				$Asesor = self::ValidarUserCod($UserCod);
@@ -209,14 +208,17 @@
 				$Validacion->Requerido('Aviso', 'Ingrese el Número de Aviso');
 				$Validacion->CantMaxCaracteres('Aviso', 15, 'Los Numeros de Aviso Tiene hasta 15 Numeros');
 				$Validacion->Numero('Aviso', 'Debe ingresar Solo Datos Númericos');
+				$Validacion->Requerido('Nodo', 'Ingrese el Nodo Correspondiente');
+				$Validacion->CantMaxCaracteres('Nodo', 8, 'Lo Maximo a Ingresar son 8 Caracteres');
+		    	$Validacion->Requerido('Sintoma', 'Seleccione el Tipo de Aviso');
 				$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Form_Masivos', 'Form_Masivos', NeuralRutasApp::RutaURL('Ajax/BaseGestionMasivos/'.AyudasConversorHexAscii::ASCII_HEX(NeuralEncriptacion::EncriptarDatos(date("Y-m-d"), array(date("Y-m-d"), 'GESTION')))), true, 'GESTION'));
 				$Script[] = $Validacion->MostrarValidacion('Form_Masivos');
-				
 				$Plantilla = new NeuralPlantillasTwig;
 				$Plantilla->ParametrosEtiquetas('InfoSession', $Parametros);
 				$Plantilla->ParametrosEtiquetas('Titulo', 'Selección de Gestión');
 				$Plantilla->ParametrosEtiquetas('CantidadAsesor', $this->Modelo->ConsultarAsesor($Asesor));
 				$Plantilla->ParametrosEtiquetas('Asesor', $Asesor);
+				$Plantilla->ParametrosEtiquetas('Sintomas', $this->Modelo->ListadoSintomas('TIPOAVISO'));
 				$Plantilla->ParametrosEtiquetas('Fecha', date("Y-m-d"));
 				$Plantilla->ParametrosEtiquetas('BaseScript', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
 				$Plantilla->AgregarFuncionAnonima('Codificacion', function ($Texto) {
@@ -229,7 +231,6 @@
 				exit();
 			}
 		}
-		
 		public function LLS($UserCod = false) {
 			if($UserCod == true) {
 				$Asesor = self::ValidarUserCod($UserCod);
@@ -238,6 +239,9 @@
 				$Validacion->Requerido('Cuenta', 'Ingrese el Número de Cuenta');
 				$Validacion->CantMaxCaracteres('Cuenta', 10, 'Los Numeros de cuenta Tiene hasta 10 Numeros');
 				$Validacion->Numero('Cuenta', 'Debe ingresar Solo Datos Númericos');
+				$Validacion->Requerido('Nodo', 'Ingrese el Nodo Correspondiente');
+				$Validacion->CantMaxCaracteres('Nodo', 8, 'Lo Maximo a Ingresar son 8 Caracteres');
+		    	$Validacion->Requerido('Paquete', 'Seleccione el Servicio Afectado');
 				$Validacion->Requerido('Sintoma', 'Seleccione el Sintoma Correspondiente');
 				$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Form_LLS', 'Form_LLS', NeuralRutasApp::RutaURL('Ajax/BaseGestionLLS/'.AyudasConversorHexAscii::ASCII_HEX(NeuralEncriptacion::EncriptarDatos(date("Y-m-d"), array(date("Y-m-d"), 'GESTION')))), true, 'GESTION'));
 				$Script[] = $Validacion->MostrarValidacion('Form_LLS');
@@ -247,6 +251,7 @@
 				$Plantilla->ParametrosEtiquetas('Titulo', 'Selección de Gestión');
 				$Plantilla->ParametrosEtiquetas('CantidadAsesor', $this->Modelo->ConsultarAsesor($Asesor));
 				$Plantilla->ParametrosEtiquetas('Asesor', $Asesor);
+				$Plantilla->ParametrosEtiquetas('ServicioAfectado', $this->Modelo->ListadoSintomas('LLS_SA'));
 				$Plantilla->ParametrosEtiquetas('Sintomas', $this->Modelo->ListadoSintomas('LLS'));
 				$Plantilla->ParametrosEtiquetas('Fecha', date("Y-m-d"));
 				$Plantilla->ParametrosEtiquetas('BaseScript', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));

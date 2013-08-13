@@ -29,6 +29,23 @@
 										</div>
 									</div>
 									<div class="control-group">
+										<label for="textfield" class="control-label">Tipo Aviso:</label>
+										<div class="controls">
+											<select name="Sintoma" id="Sintoma" class="input-large">
+												<option value="">Escoja Una Opción</option>
+												{% for Sintomas in Sintomas %}
+													<option value="{{Sintomas.Sintoma}}">{% autoescape %}{{Sintomas.Sintoma|raw}}{% endautoescape %}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>	
+									<div class="control-group">
+										<label for="password" class="control-label">Nodo</label>
+										<div class="controls">
+											<input name="Nodo" id="Nodo" placeholder="Nodo" class="input-xlarge" type="text">
+										</div>
+									</div>									
+									<div class="control-group">
 										<label for="textarea" class="control-label">Observaciones</label>
 										<div class="controls">
 											<textarea name="Observaciones" id="Observaciones" rows="5" class="input-block-level"></textarea>
@@ -42,7 +59,6 @@
 											</label>
 										</div>
 									</div>
-									
 									<div class="form-actions">
 										<input type="hidden" name="Usuario" value="{{InfoSession.Usuario|Codificacion}}" />
 										<input type="hidden" name="Asesor" value="{{Asesor|Codificacion}}" />

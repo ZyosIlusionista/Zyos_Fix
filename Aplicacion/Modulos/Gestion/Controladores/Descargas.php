@@ -6,6 +6,21 @@
 		}
 		
 		public function Index() {
+			 $Descargas = NeuralPlantillasTwig;
 			 
+		}
+		
+		public function Diaria() {
+			
+			
+		}
+		public function Mensual() {
+			
+			
+		}
+		public function Seguimientos() {
+			
+			
+			
 		}
 	}

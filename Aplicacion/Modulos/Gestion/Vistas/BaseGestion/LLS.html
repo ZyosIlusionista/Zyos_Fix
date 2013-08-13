@@ -22,6 +22,28 @@
 											<input name="Cuenta" id="Cuenta" placeholder="Cuenta" class="input-xlarge" type="text">
 										</div>
 									</div>
+
+									<div class="control-group">
+										<label for="password" class="control-label">Nodo</label>
+										<div class="controls">
+											<input name="Nodo" id="Nodo" placeholder="Nodo" class="input-xlarge" type="text">
+										</div>
+									</div>
+
+
+									<div class="control-group">
+										<label for="textfield" class="control-label">Servicio Afectado:</label>
+										<div class="controls">
+											<select name="Paquete" id="Paquete" class="input-large">
+												<option value="">Escoja Una Opción</option>
+												{% for Valor in ServicioAfectado %}
+													<option value="{{Valor.Sintoma}}">{% autoescape %}{{Valor.Sintoma|raw}}{% endautoescape %}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									
+
 									<div class="control-group">
 										<label for="textfield" class="control-label">Sintoma:</label>
 										<div class="controls">

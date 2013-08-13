@@ -1,16 +1,4 @@
 	{% if Excel|length >= 1%}
-						
-						<p>
-							<blockquote>Realice la validacion de los datos ingresados, si aparece un error en rojo por favor corregirlo</blockquote>
-							<h6>Desea Enviar los Datos</h6>
-							<p>
-								<form method="POST" action="{{NeuralRutasApp.RutaURL}}AdminUsuarios/ProcesarExcelLote/{{Fecha}}" name="Form1" id="Form1">
-									<input type="hidden" name="Data" value="{{Data}}" />
-									<button type="submit" class="btn btn-primary"><i class="icon-save"></i> Guardar</button>
-								</form>
-							</p>
-						</p>
-						
 						<div class="box box-color box-bordered">
 							<div class="box-title">
 								<h3>
@@ -34,11 +22,7 @@
 										{% for Datos in Excel %}
 											<tr>
 												{% for Columna, Valor in Datos %}
-													{% if CampoVacio(Columna, Valor) == true %}
-														<td style="background: red; color: white; font-weight: bold;">{{Valor}}</td>
-													{% else %}
-														<td>{{Valor}}</td>
-													{% endif %}
+													<td>{{MultiValidacion(Columna, Valor)}}</td>
 												{% endfor %}
 											</tr>
 										{% endfor %}

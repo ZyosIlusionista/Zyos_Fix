@@ -43,7 +43,6 @@
 				return $Consulta->ExecuteConsulta('GESTION');
 			}
 		}
-		
 		public function ListadoSintomas($Reporte = false) {
 			if($Reporte == true) {
 				$Consulta = new NeuralBDConsultas;

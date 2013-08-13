@@ -10,7 +10,7 @@
 			
 			$Plantilla = new NeuralPlantillasTwig;
 			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
-			$Plantilla->ParametrosEtiquetas('Titulo', 'Página Central');
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Grupo Experto');
 			echo $Plantilla->MostrarPlantilla('Central/Index.html', 'GESTION');
 		}
 	}

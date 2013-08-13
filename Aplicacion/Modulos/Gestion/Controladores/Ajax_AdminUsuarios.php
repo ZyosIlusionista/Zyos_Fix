@@ -36,74 +36,42 @@
 		
 		public function ConsultarExistenciaUsuario() {
 			$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
-			if($this->Modelo->ConsultarExistenciaUsuario($DatosPost['Usuario']) >= 1) { echo 'false'; } else { echo 'true'; }
-		}
-		
-		public function ResetPassword($Validacion = false) {
-			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
-				$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
-				if(is_numeric($DatosPost['ID']) == true) {
-					$DatosPost['Datos'] = AyudasConversorHexAscii::HEX_ASCII($DatosPost['Datos']);
-					$this->Modelo->ResetPassword($DatosPost['Datos']);
-				}
+			if($this->Modelo->ConsultarExistenciaUsuario($DatosPost['Usuario']) >= 1) {
+				echo 'false';
+			}
+			else {
+				echo 'true';
 			}
 		}
 		
-		public function ActualizarDatosUsuarios($Validacion = false) {
-			if($Validacion == true AND NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($Validacion), array(date("Y-m-d"), 'GESTION')) == date("Y-m-d")) {
+		public function ProcesarUsuariosLoteExcel($Validacion = false) {
+			if(NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($Validacion), array(date("Y-m-d"), 'GESTION')) == date("Y-m-d")) {
 				if(AyudasPost::DatosVacios($_POST) == false) {
-					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::ConvertirTextoUcwordsOmitido(AyudasPost::FormatoMinOmitido(AyudasPost::LimpiarInyeccionSQL($_POST), array('Data')), array('Data')));
-					$DatosPost['Data'] = NeuralEncriptacion::DesencriptarDatos($DatosPost['Data'], 'GESTION');
-					$this->Modelo->ActualizarDatosUsuarios($DatosPost);
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::ConvertirTextoUcwordsOmitido(AyudasPost::LimpiarInyeccionSQL($_POST), array('Usuario')));
+					$Excel = AyudasCopyPasteExcelArray::ConvertirExcelArrayColumnas($DatosPost['Excel'], array('Usuario', 'Nombres', 'Apellidos', 'Cedula', 'Cargo', 'Permisos'));
+					
 					$Plantilla = new NeuralPlantillasTwig;
-					$Plantilla->ParametrosEtiquetas('Nombre', $DatosPost['Nombres'].' '.$DatosPost['Apellidos']);
-					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/UsuarioActualizado.html', 'GESTION');
+					$Plantilla->ParametrosEtiquetas('Excel', $Excel);
+					$Plantilla->AgregarFuncion('MultiValidacion', function ($Columna, $Valor) {
+						
+					});
+					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/TablaUsuariosExcel.html', 'GESTION');
+				}
+				else {
+					echo '<h3 style="color: red;">El Formulario Presenta Datos Vacios</h3>';
 				}
 			}
 		}
 		
-		public function EliminarUsuario($Fecha = false) {
-			if($Fecha == true AND AyudasConversorHexAscii::HEX_ASCII($Fecha) == date("Y-m-d")) {
-				if(AyudasPost::DatosVacios($_POST) == false) {
-					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
-					$DatosPost['Datos'] = NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($DatosPost['Datos']), array(date("Y-m-d"), 'GESTION'));
-					if(is_numeric($DatosPost['Datos']) == true) {
-						$this->Modelo->EliminarUsuario($DatosPost['Datos']);
+		private function FunctionTwig_1($Columna = false, $Valor = false) {
+			if($Columna == true AND $Valor == true) {
+				if(empty($Valor) == false) {
+					if($Columna == '') {
+						
 					}
 				}
-			}
-		}
-		
-		public function ConsultarExistenciaAsesorRemote($Validacion = false) {
-			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
-				$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
-				if($this->Modelo->ConsultarExistenciaAsesorRemote($DatosPost['Usuario'])>=1) { echo 'false'; } else { echo 'true'; }
-			}
-		}
-		
-		public function AgregarAsesor($Validacion = false) {
-			if($Validacion == true AND NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($Validacion), array(date("Y-m-d"), 'GESTION')) == date("Y-m-d")) {
-				if(AyudasPost::DatosVacios($_POST) == false) {
-					$DatosPost =  AyudasPost::FormatoEspacio(AyudasPost::ConvertirTextoUcwords(AyudasPost::LimpiarInyeccionSQL($_POST)));
-					$this->Modelo->AgregarAsesor($DatosPost);
-					
-					$Plantilla = new NeuralPlantillasTwig;
-				 	$Plantilla->ParametrosEtiquetas('Nombre', $DatosPost['Nombres'].' '.$DatosPost['Apellidos']);
-				 	echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesorInsertado.html', 'GESTION');
-				}
-			}
-		}
-		
-		public function AgregarAsesoresExcel($Validacion = false) {
-			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
-				if(AyudasPost::DatosVacios($_POST) == false) {
-					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
-					$Excel = AyudasCopyPasteExcelArray::ConvertirExcelArrayColumnas($DatosPost['Excel'], array('Usuario', 'Nombres', 'Apellidos', 'Cedula'));
-					$Resultado = $this->Modelo->AgregarAsesoresExcel($Excel);
-					
-					$Plantilla = new NeuralPlantillasTwig;
-					$Plantilla->ParametrosEtiquetas('No_Guardados', $Resultado);
-					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesoresExcel.html', 'GESTION');
+				else {
+					return '<td style="background: red; color: white; font-weight: bold">No Hay Datos</td>';
 				}
 			}
 		}

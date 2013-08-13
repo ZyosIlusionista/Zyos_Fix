@@ -6,7 +6,6 @@
 						</div>
 						<ul class="subnav-menu">
 							<li><a href="{{NeuralRutasApp.RutaURL}}AdminUsuarios" title="Ver Administración Usuarios">Usuarios</a></li>
-							<li><a href="{{NeuralRutasApp.RutaURL}}AdminContenido">Contenidos</a></li>
 						</ul>
 					</div>
 				{% endif %}
@@ -57,4 +56,29 @@
 					</div>
 				{% endif %}
 				
+				{% if InfoSession.Matriz.Consultas == "true" %}
+					<div class="subnav">
+						<div class="subnav-title">
+							<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Descargas</span></a>
+						</div>
+						<ul class="subnav-menu">
+							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Mensual" title="Base General Mensual">Base General X mes.xls</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Diaria" title="Base General Mensual">Base General X día.xls</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Seguimientos" title="Base General Mensual">Seguimientos.xls</a></li>
+						</ul>
+					</div>
+				{% endif %}
+				{% if InfoSession.Matriz.Consultas == "true" %}
+					<div class="subnav">
+						<div class="subnav-title">
+							<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Reportes</span></a>
+						</div>
+						<ul class="subnav-menu">
+							<li><a href="{{NeuralRutasApp.RutaURL}}Reportes/Mensual" title="Reporte General Mensual">Totales Mes</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Reportes/Diario" title="Reporte General Diario">Totales Día</a></li>
+						</ul>
+					</div>
+				{% endif %}
+
+
 				</div>
