@@ -29,4 +29,14 @@
 				$SQL->InsertarDatos();
 			}
 		}
+		
+		public function ActivacionUsuario($Id = false, $Estado = false) {
+			if($Id == true AND $Estado == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_gestion_asesores');
+				$SQL->AgregarSentencia('Estado', $Estado);
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
 	}

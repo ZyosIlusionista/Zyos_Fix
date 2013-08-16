@@ -128,4 +128,14 @@
 			$Plantilla->ParametrosEtiquetas('Script', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
 			echo $Plantilla->MostrarPlantilla('AdminUsuarios/AsesoresExcel.html', 'GESTION');
 		}
+		
+		public function GestionAsesores() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Gestion Asesores');
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListadoAsesores(true));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminUsuarios/GestionAsesores.html', 'GESTION');
+		}
 	}

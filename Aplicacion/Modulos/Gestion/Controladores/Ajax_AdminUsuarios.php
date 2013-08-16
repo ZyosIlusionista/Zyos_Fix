@@ -75,4 +75,15 @@
 				}
 			}
 		}
+		
+		public function ActivacionUsuario($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$Estado = ($DatosPost['Estado'] == 'ACTIVO') ? 'INACTIVO ' : 'ACTIVO';
+					$this->Modelo->ActivacionUsuario($DatosPost['Asesor'], $Estado);
+					echo $Estado;
+				}
+			}
+		}
 	}
