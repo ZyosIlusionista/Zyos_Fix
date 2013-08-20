@@ -8,6 +8,7 @@
 								<a href="#" data-toggle="dropdown" class='dropdown-toggle'><i class="icon-edit"></i><span>Administración</span><span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{{NeuralRutasApp.RutaURL}}AdminUsuarios">Usuarios</a></li>
+									<li><a href="{{NeuralRutasApp.RutaURL}}AdminContenido">Contenido</a></li>
 								</ul>
 							</li>
 						{% endif %}
@@ -49,4 +50,10 @@
 								</ul>
 							</li>
 						{% endif %}
+						<li>
+							<a href="#" data-toggle="dropdown" class='dropdown-toggle'><i class="icon-edit"></i><span>Sesión Usuario</span><span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="{{NeuralRutasApp.RutaURL}}LogOut">Cerrar Sesión</a></li>
+							</ul>
+						</li>
 					</ul>
