@@ -68,4 +68,29 @@
 				$SQL->InsertarDatos();
 			}
 		}
+		
+		public function AgregarAsesoresExcel($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$Conexion = NeuralConexionBaseDatos::ObtenerConexionBase('GESTION');
+				foreach ($Array AS $Contador => $Valor) {
+					if(self::CantidadAsesoresConsulta($Conexion, $Valor['Usuario'])==0) {
+						self::InsertarDatosAsesoresConsulta($Conexion, $Valor);
+					}
+					else { $Lista[] = $Valor; }
+				}
+				return (isset($Lista) == true) ? $Lista : array();
+			}
+		}
+		
+		private function CantidadAsesoresConsulta($Conexion, $Usuario) {
+			$Consulta = $Conexion->prepare("SELECT Id FROM tbl_gestion_asesores WHERE Usuario = ? AND Estado = 'ACTIVO'");
+			$Consulta->bindValue(1, $Usuario);
+			$Consulta->execute();
+			return $Consulta->rowCount();
+		}
+		
+		private function InsertarDatosAsesoresConsulta($Conexion, $Array) {
+			$Matriz = array_merge($Array, array('Estado' => 'ACTIVO'));
+			$Insertar = $Conexion->insert('tbl_gestion_asesores', $Matriz);
+		}
 	}

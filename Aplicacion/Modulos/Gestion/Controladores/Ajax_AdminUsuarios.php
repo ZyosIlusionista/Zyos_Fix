@@ -108,4 +108,18 @@
 				}
 			}
 		}
+		
+		public function AgregarAsesoresExcel($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
+					$Excel = AyudasCopyPasteExcelArray::ConvertirExcelArrayColumnas($DatosPost['Excel'], array('Usuario', 'Nombres', 'Apellidos', 'Cedula'));
+					$Resultado = $this->Modelo->AgregarAsesoresExcel($Excel);
+					
+					$Plantilla = new NeuralPlantillasTwig;
+					$Plantilla->ParametrosEtiquetas('No_Guardados', $Resultado);
+					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesoresExcel.html', 'GESTION');
+				}
+			}
+		}
 	}
