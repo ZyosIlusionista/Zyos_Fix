@@ -44,7 +44,7 @@
 						var Tr = $(this).parent().parent().attr('id');
 						var Respuesta = "Respuesta_"+Id;
 						
-						if(confirm("Desea Eliminar El Sintoma de TELEVISION:\n\nSintoma: " + Sintoma)) {
+						if(confirm("Desea Eliminar El {{Proceso}}:\n\nSintoma: " + Sintoma)) {
 							$.ajax({
 								type: "POST",
 								url: "{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/EliminarSintoma/{{Fecha}}",
