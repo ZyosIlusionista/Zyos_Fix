@@ -15,11 +15,11 @@
 								<h3><i class="icon-th-list"></i>Mejoras IIMS</h3>
 							</div>
 							<div class="box-content nopadding">
-							<form action="#" method="POST" class="form-horizontal form-bordered" id="Form_Internet">
+							<form action="#" method="POST" class="form-horizontal form-bordered" id="Form_Iims">
 								<div class="control-group">
 									<label for="textfield" class="control-label">Selección de Arbol:</label>
 									<div class="controls">
-										<select name="Iims" id="Iims" class="input-large">
+										<select name="Sintoma" id="Sintoma" class="input-large">
 											<option value="">Escoja Una Opción</option>
 												{% for Sintomas in Sintomas %}
 													<option value="{{Sintomas.Sintoma|raw}}">{{Sintomas.Sintoma|raw}}</option>
@@ -29,7 +29,12 @@
 									<div class="control-group">
 										<label for="textfield" class="control-label">Número de Paso:</label>
 											<div class="controls">
-												<input type="number" name="Iims_Paso" id="Iims_Paso" class="input-large" />
+												<select name="IIMS_Paso" id="IIMS_Paso">
+													<option value="">Escoja Una Opción</option>
+													{% for Paso in Paso %}
+														<option value="{{Paso}}">{{Paso}}</option>
+													{% endfor %}
+												</select>
 											</div>
 									</div>
 									<div class="control-group">

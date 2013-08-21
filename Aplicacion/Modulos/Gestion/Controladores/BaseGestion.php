@@ -267,23 +267,27 @@
 		}
 		
 		//FIX
-				public function Iims($UserCod = false) {
+		public function Iims($UserCod = false) {
 			if($UserCod == true) {
 				$Asesor = self::ValidarUserCod($UserCod);
 				$Parametros = AyudasSessiones::InformacionSessionControlador(true);
 				$Validacion = new NeuralJQueryValidacionFormulario;
-				$Validacion->Requerido('Iims', 'Seleccione el Arbol correspondiente');
-				$Validacion->Requerido('Iims_Paso', 'Seleccione el Número de Paso');
+				$Validacion->Requerido('IIMS_Paso', 'Seleccione el Arbol correspondiente');
+				$Validacion->Requerido('IIMS_Paso', 'Seleccione el Número de Paso');
 				$Validacion->Requerido('Observaciones', 'Las Observaciones son Necesarias');
-				$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Form_Iims', 'Form_Iims', NeuralRutasApp::RutaURL('Ajax/BaseGestionIims/'.AyudasConversorHexAscii::ASCII_HEX(NeuralEncriptacion::EncriptarDatos(date("Y-m-d"), array(date("Y-m-d"), 'GESTION')))), true, 'GESTION'));
+				$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Form_Iims', 'Form_Iims', NeuralRutasApp::RutaURL('Ajax_BaseGestion/GuardarIIMS/'.AyudasConversorHexAscii::ASCII_HEX(NeuralEncriptacion::EncriptarDatos(date("Y-m-d"), array(date("Y-m-d"), 'GESTION')))), true, 'GESTION'));
 				$Script[] = $Validacion->MostrarValidacion('Form_Iims');
 				
+				for ($i=1; $i<=30; $i++) {
+					$Lista[]= $i;
+				}
 				$Plantilla = new NeuralPlantillasTwig;
 				$Plantilla->ParametrosEtiquetas('InfoSession', $Parametros);
 				$Plantilla->ParametrosEtiquetas('Titulo', 'Selección de Gestión');
 				$Plantilla->ParametrosEtiquetas('CantidadAsesor', $this->Modelo->ConsultarAsesor($Asesor));
 				$Plantilla->ParametrosEtiquetas('Asesor', $Asesor);
 				$Plantilla->ParametrosEtiquetas('Sintomas', $this->Modelo->ListadoSintomas('IIMS'));
+				$Plantilla->ParametrosEtiquetas('Paso', $Lista);
 				$Plantilla->ParametrosEtiquetas('Fecha', date("Y-m-d"));
 				$Plantilla->ParametrosEtiquetas('BaseScript', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
 				$Plantilla->AgregarFuncionAnonima('Codificacion', function ($Texto) {
