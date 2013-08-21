@@ -3,9 +3,9 @@
 		
 		function __Construct() {
 			parent::__Construct();
-			if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {}
+			/*if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {}
 			else { header("Location: ".NeuralRutasApp::RutaURL('Central')); exit(); }
-			AyudasSessiones::ValidarSession();
+			*/AyudasSessiones::ValidarSession();
 		}
 		
 		public function Index() {
@@ -83,6 +83,28 @@
 					$Estado = ($DatosPost['Estado'] == 'ACTIVO') ? 'INACTIVO ' : 'ACTIVO';
 					$this->Modelo->ActivacionUsuario($DatosPost['Asesor'], $Estado);
 					echo $Estado;
+				}
+			}
+		}
+		
+		public function ConsultarExistenciaAsesorRemote($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+				if(AyudasPost::DatosVacios($DatosPost) == false) {
+					echo $this->Modelo->ConsultarExistenciaAsesorRemote($DatosPost['Usuario']);
+				}
+			}
+		}
+		
+		public function AgregarAsesor($Validacion = false) {
+			if($Validacion == true AND NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($Validacion), array(date("Y-m-d"), 'GESTION')) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::ConvertirTextoUcwords(AyudasPost::FormatoMin(AyudasPost::LimpiarInyeccionSQL($_POST))));
+					$this->Modelo->AgregarAsesor($DatosPost);
+					
+					$Plantilla = new NeuralPlantillasTwig;
+					$Plantilla->ParametrosEtiquetas('Nombre', $DatosPost['Nombres'].' '.$DatosPost['Apellidos']);
+					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesorInsertado.html', 'GESTION');
 				}
 			}
 		}

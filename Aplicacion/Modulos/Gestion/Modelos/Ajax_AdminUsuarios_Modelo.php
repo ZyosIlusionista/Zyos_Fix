@@ -39,4 +39,33 @@
 				$SQL->ActualizarDatos();
 			}
 		}
+		
+		public function ConsultarExistenciaAsesorRemote($Usuario = false) {
+			if($Usuario == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_gestion_asesores');
+				$Consulta->AgregarColumnas('Id');
+				$Consulta->AgregarCondicion("Usuario = '$Usuario'");
+				$Consulta->PrepararCantidadDatos('Cantidad');
+				$Data = $Consulta->ExecuteConsulta('GESTION');
+				if($Data>=1) {
+					return 'false';
+				}
+				else {
+					return 'true';
+				}
+			}
+		}
+		
+		public function AgregarAsesor($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_gestion_asesores');
+				foreach ($Array AS $Columna => $Valor) {
+					$SQL->AgregarSentencia($Columna, $Valor);
+				}
+				$SQL->AgregarSentencia('Estado', 'ACTIVO');
+				$SQL->InsertarDatos();
+			}
+		}
 	}

@@ -12,7 +12,7 @@
 	{
 		"dbname":	"atento",
 		"user":		"root",
-		"password":	"cocacola0",
+		"password":	"azalhy",
 		"host":		"localhost",
 		"driver":	"pdo_mysql",
 		"charset":	"iso-8859-1"
