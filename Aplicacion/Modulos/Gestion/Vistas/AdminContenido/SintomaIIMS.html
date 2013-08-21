@@ -12,7 +12,7 @@
 		<div class="span6">
 			<div class="box box-bordered">
 				<div class="box-title">
-					<h3><i class="icon-th-list"></i> Agregar Sintoma de Televisión</h3>
+					<h3><i class="icon-th-list"></i> Agregar Sintoma de IIMS</h3>
 				</div>
 				<div class="box-content nopadding">
 					<form action="#" method="POST" class="form-horizontal form-bordered" name="Form" id="Form">
@@ -44,19 +44,19 @@
 						Sintoma: {required: true}
 					},
 					messages: {
-						Sintoma: {required: "Debe Ingresar el Sintoma Correspondiente a Televisión"}
+						Sintoma: {required: "Debe Ingresar el Sintoma Correspondiente a IIMS"}
 					},
 				submitHandler: function(form) {
 					$.ajax({
 						type: "POST", 
-						url: "{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/AgregarSintomaTelevision/{{Fecha}}", 
+						url: "{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/AgregarSintomaIIMS/{{Fecha}}", 
 						dataType: "html", 
 						data: $("#Form").serialize(), 
 						beforeSend:function(){
 							$("#CargarContenido").html('<div style="border: 0px; font-family: verdana; text-align: center;"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/xeditable/loading.gif" alt="" style="border: 0px; font-family: verdana; width: 25px; height: 25px; text-align: center;" /></div>');
 						},
 						success: function(response){
-							$("#CargarContenido").load("{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/CargarListadoSintomas", { "Proceso" : "TELEVISION" });
+							$("#CargarContenido").load("{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/CargarListadoSintomas", { "Proceso" : "IIMS" });
 						}
 					})
 					}
@@ -73,7 +73,7 @@
 		
 		<script>
 			$(document).ready(function() {
-				$("#CargarContenido").load("{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/CargarListadoSintomas", { "Proceso" : "TELEVISION" });
+				$("#CargarContenido").load("{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/CargarListadoSintomas", { "Proceso" : "IIMS" });
 			});
 		</script>
 	{% endblock %}

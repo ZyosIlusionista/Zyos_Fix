@@ -7,21 +7,73 @@
 		}
 		
 		public function Index() {
-			header("Location: ".NeuralRutasApp::RutaURL('AdminContenido/SintomaTelevision'));
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Gestión Sintomas');
+			echo $Plantilla->MostrarPlantilla('AdminContenido/Index.html', 'GESTION');
 		}
 		
 		public function SintomaTelevision() {
 			
-			$Validacion = new NeuralJQueryValidacionFormulario;
-			$Validacion->Requerido('Sintoma', 'Debe Ingresar el Sintoma Correspondiente a Televisión');
-			$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Form', 'CargarContenido', NeuralRutasApp::RutaURL('Ajax_AdminContenido/AgregarSintomaTelevision/'.AyudasConversorHexAscii::ASCII_HEX('TELEVISION').'/'.AyudasConversorHexAscii::ASCII_HEX('Sintomas Televisión')), true, 'GESTION'));
-			$Script[] = $Validacion->MostrarValidacion('Form');
-			
 			$Plantilla = new NeuralPlantillasTwig;
 			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
 			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas Televisión');
-			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarSintomasControlador('TELEVISION'));
-			$Plantilla->ParametrosEtiquetas('Script', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
 			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaTelevision.html', 'GESTION');
+		}
+		
+		public function SintomaInternet() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas Internet');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaInternet.html', 'GESTION');
+		}
+		
+		public function SintomaTelefonia() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas Telefonia');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaTelefonia.html', 'GESTION');
+		}
+		
+		public function SintomaMiClaro() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas Mi Claro');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaMiClaro.html', 'GESTION');
+		}
+		
+		public function SintomaMasivos() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas Masivos');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaMasivos.html', 'GESTION');
+		}
+		
+		public function SintomaLLS() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas LLS');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaLLS.html', 'GESTION');
+		}
+		
+		public function SintomaIIMS() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Sintomas IIMS');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaIIMS.html', 'GESTION');
 		}
 	}

@@ -6,12 +6,12 @@
 			AyudasSessiones::ValidarSessionModelo();
 		}
 		
-		public function CargarListadoSintoma($TipoSintoma = false) {
-			if($TipoSintoma == true) {
+		public function CargarListadoSintomas($Tipo_Reporte = false) {
+			if($Tipo_Reporte == true) {
 				$Consulta = new NeuralBDConsultas;
 				$Consulta->CrearConsulta('tbl_base_sintoma');
-				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_sintoma', array('Fecha', 'Hora')));
-				$Consulta->AgregarCondicion("Tipo_Reporte = '$TipoSintoma'");
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_sintoma'));
+				$Consulta->AgregarCondicion("Tipo_Reporte = '$Tipo_Reporte'");
 				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
 				$Consulta->AgregarOrdenar('Sintoma', 'ASC');
 				$Consulta->PrepararQuery();
@@ -19,18 +19,40 @@
 			}
 		}
 		
-		public function AgregarSintoma($Sintoma = false, $Usuario = false, $TipoReporte = false) {
-			if($Sintoma == true AND $Usuario == true AND $TipoReporte == true) {
+		public function AgregarSintomaBase($Sintoma = false, $Tipo_Reporte = false) {
+			if($Sintoma == true AND $Tipo_Reporte == true) {
 				$SQL = new NeuralBDGab;
 				$SQL->SeleccionarDestino('GESTION', 'tbl_base_sintoma');
-				$SQL->AgregarSentencia('Tipo_Reporte', mb_strtoupper($TipoReporte));
 				$SQL->AgregarSentencia('Sintoma', $Sintoma);
+				$SQL->AgregarSentencia('Tipo_Reporte', $Tipo_Reporte);
 				$SQL->AgregarSentencia('Estado', 'ACTIVO');
 				$SQL->AgregarSentencia('Fecha', date("Y-m-d"));
 				$SQL->AgregarSentencia('Hora', date("H:i:s"));
 				$SQL->InsertarDatos();
 			}
 		}
+		
+		public function EliminarSintoma($Id = false) {
+			if($Id == true AND is_numeric($Id) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_sintoma');
+				$SQL->AgregarSentencia('Estado', 'INACTIVO');
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function ActualizarSintoma($Id = false, $Sintoma = false) {
+			if($Id == true AND $Sintoma == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_sintoma');
+				$SQL->AgregarSentencia('Sintoma', $Sintoma);
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		
 		
 		/**
 		 * Metodo Privado
