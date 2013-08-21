@@ -272,6 +272,7 @@
 				$Asesor = self::ValidarUserCod($UserCod);
 				$Parametros = AyudasSessiones::InformacionSessionControlador(true);
 				$Validacion = new NeuralJQueryValidacionFormulario;
+				$Validacion->Requerido('Sintoma', 'Seleccione la Opción del Arbol');
 				$Validacion->Requerido('IIMS_Paso', 'Seleccione el Arbol correspondiente');
 				$Validacion->Requerido('IIMS_Paso', 'Seleccione el Número de Paso');
 				$Validacion->Requerido('Observaciones', 'Las Observaciones son Necesarias');
