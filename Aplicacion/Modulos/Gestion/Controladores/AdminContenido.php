@@ -76,4 +76,13 @@
 			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
 			echo $Plantilla->MostrarPlantilla('AdminContenido/SintomaIIMS.html', 'GESTION');
 		}
+		
+		public function PaqueteTelevision() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Paquete Televisión');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/Dependiente/PaqueteTelevision.html', 'GESTION');
+		}
 	}

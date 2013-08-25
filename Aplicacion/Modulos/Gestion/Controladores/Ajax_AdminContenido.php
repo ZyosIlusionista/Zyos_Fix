@@ -113,4 +113,46 @@
 				}
 			}
 		}
+		
+		public function ListarPaqueteTelevision() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarPaqueteTelevision(true));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/PaqueteTelevision/SelectPaquete.html', 'GESTION');
+		}
+		
+		public function ListarPaqueteTelevisionTabla() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarPaqueteTelevisionTabla(true));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/PaqueteTelevision/ListadoPaquetesTelevision.html', 'GESTION');
+		}
+		
+		public function AgregarPaqueteTelevision($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->AgregarPaqueteTelevision($DatosPost);
+				}
+			}
+		}
+		
+		public function EditarModeloTelevision($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->EditarModeloTelevision($DatosPost);
+				}
+			}
+		}
+		
+		public function EliminarModeloTelevision($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
+					$this->Modelo->EliminarModeloTelevision($DatosPost['Id']);
+				}
+			}
+		}
 	}

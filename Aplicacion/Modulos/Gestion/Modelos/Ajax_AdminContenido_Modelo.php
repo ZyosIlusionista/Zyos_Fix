@@ -6,6 +6,34 @@
 			AyudasSessiones::ValidarSessionModelo();
 		}
 		
+		/**
+		 * Metodo Privado
+		 * ListarColumnas($Tabla = false, $Omitidos = false)
+		 * 
+		 * @param $Alias: es un array asociativo
+		 * @example array('Columna' => 'Alias')
+		 */
+		private function ListarColumnasTabla($Tabla = false, $Omitidos = false, $Alias = false) {
+			if($Tabla == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Lista = $Consulta->ExecuteQueryManual('GESTION', "DESCRIBE $Tabla");
+				$Cantidad = count($Lista);
+				$Matriz = (is_array($Omitidos) == true) ? array_flip($Omitidos) : array();
+				$AliasBase = (is_array($Alias) == true) ? $Alias : array();
+				for ($i=0; $i<$Cantidad; $i++) {
+					if(array_key_exists($Lista[$i]['Field'], $Matriz) == false) {
+						if(array_key_exists($Lista[$i]['Field'], $AliasBase) == true) {
+							$Columna[] = $Tabla.'.'.$Lista[$i]['Field'].' AS '.$AliasBase[$Lista[$i]['Field']];
+						}
+						else {
+							$Columna[] = $Tabla.'.'.$Lista[$i]['Field'];
+						}
+					}
+				}
+				return implode(', ', $Columna);
+			}
+		}
+		
 		public function CargarListadoSintomas($Tipo_Reporte = false) {
 			if($Tipo_Reporte == true) {
 				$Consulta = new NeuralBDConsultas;
@@ -52,33 +80,59 @@
 			}
 		}
 		
-		
-		
-		/**
-		 * Metodo Privado
-		 * ListarColumnas($Tabla = false, $Omitidos = false)
-		 * 
-		 * @param $Alias: es un array asociativo
-		 * @example array('Columna' => 'Alias')
-		 */
-		private function ListarColumnasTabla($Tabla = false, $Omitidos = false, $Alias = false) {
-			if($Tabla == true) {
+		public function ListarPaqueteTelevision($Validacion = false) {
+			if($Validacion == true) {
 				$Consulta = new NeuralBDConsultas;
-				$Lista = $Consulta->ExecuteQueryManual('GESTION', "DESCRIBE $Tabla");
-				$Cantidad = count($Lista);
-				$Matriz = (is_array($Omitidos) == true) ? array_flip($Omitidos) : array();
-				$AliasBase = (is_array($Alias) == true) ? $Alias : array();
-				for ($i=0; $i<$Cantidad; $i++) {
-					if(array_key_exists($Lista[$i]['Field'], $Matriz) == false) {
-						if(array_key_exists($Lista[$i]['Field'], $AliasBase) == true) {
-							$Columna[] = $Tabla.'.'.$Lista[$i]['Field'].' AS '.$AliasBase[$Lista[$i]['Field']];
-						}
-						else {
-							$Columna[] = $Tabla.'.'.$Lista[$i]['Field'];
-						}
-					}
-				}
-				return implode(', ', $Columna);
+				$Consulta->CrearConsulta('tbl_base_paquete_tv');
+				$Consulta->AgregarColumnas('Paquete');
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Paquete', 'ASC');
+				$Consulta->AgregarAgrupar('Paquete');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function ListarPaqueteTelevisionTabla($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_paquete_tv');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_paquete_tv'));
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Paquete ASC, Modelo', 'ASC');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function AgregarPaqueteTelevision($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_paquete_tv');
+				$SQL->AgregarSentencia('Paquete', $Array['Paquete']);
+				$SQL->AgregarSentencia('Modelo', $Array['Modelo']);
+				$SQL->AgregarSentencia('Estado', 'ACTIVO');
+				$SQL->InsertarDatos();
+			}
+		}
+		
+		public function EditarModeloTelevision($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_paquete_tv');
+				$SQL->AgregarSentencia('Modelo', $Array['Modelo']);
+				$SQL->AgregarCondicion('Id', $Array['Id']);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function EliminarModeloTelevision($Id = false) {
+			if($Id == true AND is_numeric($Id) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_paquete_tv');
+				$SQL->AgregarSentencia('Estado', 'INACTIVO');
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
 			}
 		}
 	}
