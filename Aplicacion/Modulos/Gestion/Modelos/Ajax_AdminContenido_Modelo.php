@@ -135,4 +135,60 @@
 				$SQL->ActualizarDatos();
 			}
 		}
+		
+		public function ListarMarCablemodems($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_equipo');
+				$Consulta->AgregarColumnas('Marca');
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarAgrupar('Marca');
+				$Consulta->AgregarOrdenar('Marca', 'ASC');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function InternetAgregarMarcaModelo($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_equipo');
+				$SQL->AgregarSentencia('Marca', $Array['Marca']);
+				$SQL->AgregarSentencia('Modelo', $Array['Modelo']);
+				$SQL->AgregarSentencia('Estado', 'ACTIVO');
+				$SQL->InsertarDatos();
+			}
+		}
+		
+		public function ListarModelosCablemodemInternet($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_equipo');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_equipo'));
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Marca ASC, Modelo', 'ASC');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function InternetEditarModelo($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_equipo');
+				$SQL->AgregarSentencia('Modelo', $Array['Modelo']);
+				$SQL->AgregarCondicion('Id', $Array['Id']);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function InternetEliminarModelo($Id = false) {
+			if($Id == true AND is_numeric($Id) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_equipo');
+				$SQL->AgregarSentencia('Estado', 'INACTIVO');
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
 	}

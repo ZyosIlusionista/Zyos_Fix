@@ -155,4 +155,46 @@
 				}
 			}
 		}
+		
+		public function ListarMarCablemodems() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarMarCablemodems(true));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/Internet/Select.html', 'GESTION');
+		}
+		
+		public function InternetAgregarMarcaModelo($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->InternetAgregarMarcaModelo($DatosPost);
+				}
+			}
+		}
+		
+		public function ListarModelosCablemodemInternet() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarModelosCablemodemInternet(true));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/Internet/ListadoModelos.html', 'GESTION');
+		}
+		
+		public function InternetEditarModelo($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->InternetEditarModelo($DatosPost);
+				}
+			}
+		}
+		
+		public function InternetEliminarModelo($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->InternetEliminarModelo($DatosPost['Id']);
+				}
+			}
+		}
 	}
