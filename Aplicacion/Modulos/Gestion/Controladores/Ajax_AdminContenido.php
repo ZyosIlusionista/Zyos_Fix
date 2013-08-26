@@ -197,4 +197,39 @@
 				}
 			}
 		}
+		
+		public function InternetAgregarFirmware($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->InternetAgregarFirmware($DatosPost);
+				}
+			}
+		}
+		
+		public function InternetListadoFirmware() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->InternetListadoFirmware(true));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/Internet/ListadoFirmware.html', 'GESTION');
+		}
+		
+		public function InternetEliminarFirmware($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->InternetEliminarFirmware($DatosPost['Id']);
+				}
+			}
+		}
+		
+		public function InternetEditarFirmware($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->InternetEditarFirmware($DatosPost);
+				}
+			}
+		}
 	}

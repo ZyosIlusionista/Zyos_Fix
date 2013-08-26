@@ -191,4 +191,47 @@
 				$SQL->ActualizarDatos();
 			}
 		}
+		
+		public function InternetAgregarFirmware($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_firmware');
+				$SQL->AgregarSentencia('Marca', $Array['Marca']);
+				$SQL->AgregarSentencia('Firmware', $Array['Firmware']);
+				$SQL->AgregarSentencia('Estado', 'ACTIVO');
+				$SQL->InsertarDatos();
+			}
+		}
+		
+		public function InternetListadoFirmware($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_firmware');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_firmware'));
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Marca ASC, Firmware', 'ASC');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function InternetEliminarFirmware($Id = false) {
+			if($Id == true AND is_numeric($Id) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_firmware');
+				$SQL->AgregarSentencia('Estado', 'INACTIVO');
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function InternetEditarFirmware($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_firmware');
+				$SQL->AgregarSentencia('Firmware', $Array['Firmware']);
+				$SQL->AgregarCondicion('Id', $Array['Id']);
+				$SQL->ActualizarDatos();
+			}
+		}
 	}

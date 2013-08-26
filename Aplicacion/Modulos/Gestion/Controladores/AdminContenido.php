@@ -94,4 +94,13 @@
 			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
 			echo $Plantilla->MostrarPlantilla('AdminContenido/Dependiente/Cablemodem.html', 'GESTION');
 		}
+		
+		public function InternetFirmware() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Firmware');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/Dependiente/Firmware.html', 'GESTION');
+		}
 	}
