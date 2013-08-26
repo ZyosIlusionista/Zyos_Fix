@@ -103,4 +103,13 @@
 			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
 			echo $Plantilla->MostrarPlantilla('AdminContenido/Dependiente/Firmware.html', 'GESTION');
 		}
+		
+		public function LLServicioAfectado() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Servicio Afectado');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('AdminContenido/Dependiente/LLServicioAfectado.html', 'GESTION');
+		}
 	}

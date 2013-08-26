@@ -232,4 +232,39 @@
 				}
 			}
 		}
+		
+		public function LLSagregarServicioAfectado($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->LLSagregarServicioAfectado($DatosPost['Sintoma']);
+				}
+			}
+		}
+		
+		public function LLSListadoServicioAfectado() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->LLSListadoServicioAfectado(true));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/LLS/ListadoServcioAfectado.html', 'GESTION');
+		}
+		
+		public function LLSeliminarServicioAfectado($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->LLSeliminarServicioAfectado($DatosPost['Id']);
+				}
+			}
+		}
+		
+		public function LLSeditarServicioAfectado($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->LLSeditarServicioAfectado($DatosPost);
+				}
+			}
+		}
 	}

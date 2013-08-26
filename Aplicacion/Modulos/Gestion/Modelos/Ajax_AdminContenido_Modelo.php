@@ -234,4 +234,50 @@
 				$SQL->ActualizarDatos();
 			}
 		}
+		
+		public function LLSagregarServicioAfectado($Sintoma = false) {
+			if($Sintoma == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_sintoma');
+				$SQL->AgregarSentencia('Sintoma', $Sintoma);
+				$SQL->AgregarSentencia('Tipo_Reporte', 'LLS_SA');
+				$SQL->AgregarSentencia('Estado', 'ACTIVO');
+				$SQL->AgregarSentencia('Fecha', date("Y-m-d"));
+				$SQL->AgregarSentencia('Hora', date("H:i:s"));
+				$SQL->InsertarDatos();
+			}
+		}
+		
+		public function LLSListadoServicioAfectado($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_sintoma');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_sintoma'));
+				$Consulta->AgregarCondicion("Tipo_Reporte = 'LLS_SA'");
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Sintoma', 'ASC');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function LLSeliminarServicioAfectado($Id = false) {
+			if($Id == true AND is_numeric($Id) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_sintoma');
+				$SQL->AgregarSentencia('Estado', 'INACTIVO');
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function LLSeditarServicioAfectado($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_sintoma');
+				$SQL->AgregarSentencia('Sintoma', $Array['Sintoma']);
+				$SQL->AgregarCondicion('Id', $Array['Id']);
+				$SQL->ActualizarDatos();
+			}
+		}
 	}
