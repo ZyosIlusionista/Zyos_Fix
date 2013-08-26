@@ -10,13 +10,10 @@
 			
 			$Parametros = AyudasSessiones::InformacionSessionControlador(true);
 			$Plantilla = new NeuralPlantillasTwig;
-			$Plantilla->ParametrosEtiquetas('InfoSession', $Parametros);
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
 			$Plantilla->ParametrosEtiquetas('Titulo', 'Listado de Asesores');
-			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarUsuariosAsignados($Parametros['Usuario']));
-			$Plantilla->ParametrosEtiquetas('Fecha', date("Y-m-d"));
-			$Plantilla->AgregarFuncionAnonima('Codificacion', function ($Parametro = false) {
-				if($Parametro == true) { return AyudasConversorHexAscii::ASCII_HEX(NeuralEncriptacion::EncriptarDatos($Parametro, array(date("Y-m-d"), 'GESTION'))); }
-			});
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarAsesoresAsignacion($Parametros['Usuario']));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
 			echo $Plantilla->MostrarPlantilla('AsignacionAsesores/ListadoActivos.html', 'GESTION');
 		}
 		

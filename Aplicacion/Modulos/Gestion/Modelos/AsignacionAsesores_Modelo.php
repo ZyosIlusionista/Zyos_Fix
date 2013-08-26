@@ -89,4 +89,44 @@
 				return implode(', ', $Columna);
 			}
 		}
+		
+		public function ListarAsesoresAsignacion($Usuario = false) {
+			if($Usuario == true) {
+				return self::AsignarAsignacion($Usuario);
+			}
+		}
+		
+		private function AsignarAsignacion($Usuario = false) {
+			if($Usuario == true) {
+				$Asesores = self::ListarAsesoresValidacion(true);
+				$Conexion = NeuralConexionBaseDatos::ObtenerConexionBase('GESTION');
+				for ($i=0; $i<$Asesores['Cantidad']; $i++) {
+					$Consulta = $Conexion->prepare("SELECT Id FROM tbl_gestion_asesor_asignado WHERE Asesor = ? AND Usuario = ? AND Estado = ?");
+					$Consulta->bindValue(1, $Asesores[$i]['Usuario']);
+					$Consulta->bindValue(2, $Usuario);
+					$Consulta->bindValue(3, 'ACTIVO');
+					$Consulta->execute();
+					if($Consulta->rowCount()>=1) {
+						$Lista[] = array_merge($Asesores[$i], array('Asignacion' => 'ASIGNADO'));
+					}
+					else {
+						$Lista[] = array_merge($Asesores[$i], array('Asignacion' => 'NO ASIGNADO'));
+					}
+				}
+				return $Lista;
+			}
+		}
+		
+		private function ListarAsesoresValidacion($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_gestion_asesores');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_gestion_asesores'));
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Usuario', 'ASC');
+				$Consulta->PrepararCantidadDatos('Cantidad');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
 	}
