@@ -16,6 +16,6 @@
 			$Plantilla->ParametrosEtiquetas('GestionesGlobales', $this->Modelo->GestionesGlobales(true));
 			$Plantilla->ParametrosEtiquetas('GestionesUsuario', $this->Modelo->ConsultaGestionUsuario($Informacion['Usuario']));
 			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
-			echo $Plantilla->MostrarPlantilla('Widgets/Widgets.html', 'GESTION', false);
+			echo $Plantilla->MostrarPlantilla('Widgets/Widgets.html', 'GESTION', true);
 		}
 	}

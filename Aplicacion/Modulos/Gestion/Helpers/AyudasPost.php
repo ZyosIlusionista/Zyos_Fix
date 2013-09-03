@@ -269,7 +269,7 @@
 			$Cadena = str_ireplace('&', '', $Cadena);
 			$Cadena = str_ireplace('INSERT ', '', $Cadena);
 			$Cadena = str_ireplace('INTO', '', $Cadena);
-			$Cadena = str_ireplace('VALUES', '', $Cadena);
+			//$Cadena = str_ireplace('VALUES', '', $Cadena);
 			$Cadena = str_ireplace('FROM', '', $Cadena);
 			$Cadena = str_ireplace('LEFT', '', $Cadena);
 			$Cadena = str_ireplace('JOIN', '', $Cadena);
@@ -277,8 +277,8 @@
 			$Cadena = str_ireplace('LIMIT', '', $Cadena);
 			$Cadena = str_ireplace('ORDER BY', '', $Cadena);
 			//$Cadena = str_ireplace('AND', '', $Cadena);
-			$Cadena = str_ireplace('DESC', '', $Cadena);
-			$Cadena = str_ireplace('ASC', '', $Cadena);
+			//$Cadena = str_ireplace('DESC', '', $Cadena);
+			//$Cadena = str_ireplace('ASC', '', $Cadena);
 			//$Cadena = str_ireplace('ON ', '', $Cadena);
 			$Cadena = addslashes($Cadena);
 			return $Cadena;
