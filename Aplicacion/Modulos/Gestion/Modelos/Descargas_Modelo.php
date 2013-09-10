@@ -6,43 +6,16 @@
 
 		}
 		
-		public function ConsultaMatriz() {
-			$Consulta = new NeuralBDConsultas;	
-			$Consulta->CrearConsulta('tbl_base_general');
-			$Consulta->PrepararQuery();
-			return $Consulta->ExecuteConsulta('GESTION');
-						
+		public function Diario($Fecha = false) {
+			if($Fecha == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_general');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_general', false, array('Id' => 'Consecutivo')));
+				$Consulta->AgregarCondicion("Fecha = '$Fecha'");
+				return $Consulta->PrepararQuery();
+			}
 		}
 		
-		public function ConsultaDiaria($Fecha) {
-			$Consulta = new NeuralBDConsultas;
-			$Consulta->CrearConsulta('tbl_base_general');
-			$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_general'));
-			$Consulta->AgregarCondicion("Fecha = '$Fecha'");
-			$Consulta->PrepararCantidadDatos('Cantidad');
-			$Consulta->PrepararQuery();
-			return $Consulta->ExecuteConsulta('GESTION');
-		}
-		
-		public function ConsultaMensual($Fecha) {
-			$Consulta = new NeuralBDConsultas;
-			$Consulta->CrearConsulta('tbl_base_general');
-			$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_general'));
-			$Consulta->AgregarCondicion("Fecha = '$Fecha'");
-			$Consulta->PrepararCantidadDatos('Cantidad');
-			$Consulta->PrepararQuery();
-			return $Consulta->ExecuteConsulta('GESTION');
-		}
-		
-		public function ConsultaSeguimientos($Fecha) {
-			$Consulta = new NeuralBDConsultas;
-			$Consulta->CrearConsulta('tbl_base_general');
-			$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_general'));
-			$Consulta->AgregarCondicion("Fecha = '$Fecha'");
-			$Consulta->PrepararCantidadDatos('Cantidad');
-			$Consulta->PrepararQuery();
-			return $Consulta->ExecuteConsulta('GESTION');
-		}		
 		/**
 		 * Metodo Privado
 		 * ListarColumnas($Tabla = false, $Omitidos = false)

@@ -57,26 +57,26 @@
 					</div>
 				{% endif %}
 				
-				{% if InfoSession.Matriz.Consultas == "true" %}
+				{% if InfoSession.Matriz.Descargas == "true" %}
 					<div class="subnav">
 						<div class="subnav-title">
 							<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Descargas</span></a>
 						</div>
 						<ul class="subnav-menu">
-							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Mensual" title="Base General Mensual">Base General X mes.xls</a></li>
-							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Diaria" title="Base General Mensual">Base General X día.xls</a></li>
-							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Seguimientos" title="Base General Mensual">Seguimientos.xls</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Mensual" title="Base General Mensual">Base General Mensual</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Diaria" title="Base General Diario">Base General Díario</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Descargas/Seguimientos" title="Base General Mensual">Seguimientos</a></li>
 						</ul>
 					</div>
 				{% endif %}
-				{% if InfoSession.Matriz.Consultas == "true" %}
+				{% if InfoSession.Matriz.Informes == "true" %}
 					<div class="subnav">
 						<div class="subnav-title">
-							<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Reportes</span></a>
+							<a href="#" class='toggle-subnav'><i class="icon-angle-down"></i><span>Informes</span></a>
 						</div>
 						<ul class="subnav-menu">
-							<li><a href="{{NeuralRutasApp.RutaURL}}Reportes/Mensual" title="Reporte General Mensual">Totales Mes</a></li>
-							<li><a href="{{NeuralRutasApp.RutaURL}}Reportes/Diario" title="Reporte General Diario">Totales Día</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Informes/Dia" title="Informe Diario">Informe Diario</a></li>
+							<li><a href="{{NeuralRutasApp.RutaURL}}Informes/Mes" title="Informe Mensual">Informe Mensual</a></li>
 						</ul>
 					</div>
 				{% endif %}

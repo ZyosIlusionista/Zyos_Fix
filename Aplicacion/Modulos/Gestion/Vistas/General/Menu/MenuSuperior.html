@@ -50,6 +50,16 @@
 								</ul>
 							</li>
 						{% endif %}
+						
+						{% if InfoSession.Matriz.Informes == "true" %}
+							<li class='{{ InfoSession.Controlador == "Informes" ? "active" : "" }}'>
+								<a href="#" data-toggle="dropdown" class='dropdown-toggle'><i class="icon-edit"></i><span>Informes</span><span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{{NeuralRutasApp.RutaURL}}Informes/Dia">Informe Diario</a></li>
+									<li><a href="{{NeuralRutasApp.RutaURL}}Informes/Mes">Informe Mensula</a></li>
+								</ul>
+							</li>
+						{% endif %}
 						<li>
 							<a href="#" data-toggle="dropdown" class='dropdown-toggle'><i class="icon-edit"></i><span>Sesión Usuario</span><span class="caret"></span></a>
 							<ul class="dropdown-menu">
