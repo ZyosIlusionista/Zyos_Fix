@@ -13,7 +13,7 @@
 					<table class="table table-nomargin" style="font-family: verdana; font-size: 10px;">
 						<thead>
 							<tr>
-								<th>Usuario</th>
+								<th>UsuarioA</th>
 								<th>Nombres</th>
 								<th>Apellidos</th>
 								<th>Cedula</th>
@@ -69,6 +69,7 @@
 					var Id = $(this).attr('id');
 					var Data = $(this).attr('data');
 					var Raw = $(this).attr('raw');
+					var IdTr = $(this).parent().attr('id');
 					if(Data == 'ACTIVO') {
 						var Encendido = "on";
 					}
@@ -85,17 +86,19 @@
 								data: { Asesor : Raw, Estado : Data},
 								success: function(response) {
 									$("#Respuesta" + Id).html(response);
+									$("#" + IdTr).css({background: "#FFFFFF", color: "black"});
 								}
 							});
 						},
 						function() {
 							$.ajax({
 								type: "POST",
-								url: "{{NeuralRutasApp.RutaURL}}Ajax_AdminUsuarios/ActivacionUsuario/{{Fecha}}",
+								url: "{{NeuralRutasApp.RutaURL}}Ajax_AdminUsuarios/DesActivacionUsuario/{{Fecha}}",
 								dataType: "html", 
 								data: { Asesor : Raw, Estado : Data},
 								success: function(response) {
 									$("#Respuesta" + Id).html(response);
+									$("#" + IdTr).css({background: "#F79F81", color: "black"});
 								}
 							});
 						},

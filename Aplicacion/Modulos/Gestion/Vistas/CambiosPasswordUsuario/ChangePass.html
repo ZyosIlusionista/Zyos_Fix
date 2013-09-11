@@ -26,17 +26,18 @@
 				<tbody>
 					<tr class="odd">
 						<td class="">
-						<input name="passuno" id="passuno"/>
+						<input type="password" name="PW_1" id="PW_1"/>
 						</td>
 						<td class="">
-						<input name="passdos" id="passdos"/>
+						<input type="password" name="PW_2" id="PW_2"/>
 						</td>
 					</tr>
 					<tr class="odd">
 						<td class="sorting_1" colspan="3">
 						
 						<div id="respuesta">
-							<input type="submit" name="cambiar" id="cambiar" value="Cambiar Contraseña" class="btn btn-primary" />
+							<input type="hidden" name="Data" id="Data" value="{{Consulta.0.Id|Codificar}}" />
+							<input type="submit" name="Cambiar" id="Cambiar" value="Cambiar Contraseña" class="btn btn-primary" />
 						</div>
 						</td>
 					</tr>

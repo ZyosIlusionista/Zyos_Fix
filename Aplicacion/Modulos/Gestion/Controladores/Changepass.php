@@ -9,21 +9,25 @@
 		
 		public function Index() {
 			
-			$Parametros = AyudasSessiones::InformacionSessionControlador(true);
 			$Validacion = new NeuralJQueryValidacionFormulario;
-            $Validacion->IgualACampo('Passuno', 'Passdos', 'Las Contraseñas No Coinciden');
-            $Validacion->RangoLongitud('Passuno', '8', '20', 'El campo es de 8 a 20 caracteres');
-			$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Formulario', 'respuesta', NeuralRutasApp::RutaURL('Ajax/CambioPassword'), true, 'GESTION'));
+			$Validacion->Requerido('PW_1', 'Ingrese la Nueva Contraseña');
+			$Validacion->Requerido('PW_2', 'Ingrese la Confirmación de la Contraseña');
+            $Validacion->IgualACampo('PW_1', 'PW_2', 'Las Contraseñas No Coinciden');
+            $Validacion->RangoLongitud('PW_1', '8', '20', 'El Campo Debe Tener 8 a 20 caracteres');
+			$Validacion->SubmitHandler(NeuralJQueryAjax::EnviarFormularioPOST('Formulario', 'respuesta', NeuralRutasApp::RutaURL('Ajax_ChangePass/CambioPassword/'.AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d"))), true, 'GESTION'));
             $Script[] = $Validacion->MostrarValidacion('Formulario');
             
-
-			//Ayudas::print_r($Script);
-            
+            $Parametros = AyudasSessiones::InformacionSessionControlador(true);
 			$Plantilla = new NeuralPlantillasTwig;
             $Plantilla->ParametrosEtiquetas('InfoSession', $Parametros);
+            $Plantilla->ParametrosEtiquetas('Titulo', 'Cambio Contraseña');
             $Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->InformacionUsuario($Parametros['Usuario']));
             $Plantilla->ParametrosEtiquetas('Scrip', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
-         	echo $Plantilla->MostrarPlantilla('CambiosUsuarios/ChangePass.html', 'GESTION');
-		}	}
-		
-		//<form action="#" method="POST" name="Formulario" id="Formulario">
+            $Plantilla->AgregarFuncionAnonima('Codificar', function ($Texto) {
+            	return NeuralEncriptacion::EncriptarDatos($Texto, array(date("Y-m-d"), 'GESTION'));
+            });
+         	echo $Plantilla->MostrarPlantilla('CambiosPasswordUsuario/ChangePass.html', 'GESTION');
+         	
+         	Ayudas::print_r($this->Modelo->InformacionUsuario($Parametros['Usuario']));
+		}
+	}

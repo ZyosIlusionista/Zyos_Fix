@@ -8,7 +8,8 @@
 		
 		public function Index() {
 		
-			
+			header("Location: ".NeuralRutasApp::RutaURL('Descargas/Diaria'));
+			exit();
 		}
 		
 		public function Diaria() {

@@ -30,11 +30,48 @@
 			}
 		}
 		
-		public function ActivacionUsuario($Id = false, $Estado = false) {
-			if($Id == true AND $Estado == true) {
+		private static function ConsultarCedulaUsuario($Id = false) {
+			if($Id == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_sistema_usuarios');
+				$Consulta->AgregarColumnas('Cedula');
+				$Consulta->AgregarCondicion("Id = '$Id'");
+				$Consulta->PrepararQuery();
+				$Data = $Consulta->ExecuteConsulta('GESTION');
+				return $Data[0]['Cedula'];
+			}
+		}
+		
+		public function ResetPassword($ID = false) {
+			if($ID == true) {
+				$Consulta = self::ConsultarCedulaUsuario($ID);
 				$SQL = new NeuralBDGab;
-				$SQL->SeleccionarDestino('GESTION', 'tbl_gestion_asesores');
-				$SQL->AgregarSentencia('Estado', $Estado);
+				$SQL->SeleccionarDestino('GESTION', 'tbl_sistema_usuarios');
+				$SQL->AgregarCondicion('Id', $ID);
+				$SQL->AgregarSentencia('Password', sha1($Consulta));
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function ActualizarDatosUsuarios($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_sistema_usuarios');
+				foreach ($Array AS $Columna => $Valor) {
+					if($Columna <> 'Data') {
+						$SQL->AgregarSentencia($Columna, $Valor);
+					}
+				}
+				$SQL->AgregarCondicion('Id', $Array['Data']);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function EliminarUsuario($Id = false) {
+			if($Id == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_sistema_usuarios');
+				$SQL->AgregarSentencia('Estado', 'ELIMINADO');
 				$SQL->AgregarCondicion('Id', $Id);
 				$SQL->ActualizarDatos();
 			}
@@ -46,14 +83,9 @@
 				$Consulta->CrearConsulta('tbl_gestion_asesores');
 				$Consulta->AgregarColumnas('Id');
 				$Consulta->AgregarCondicion("Usuario = '$Usuario'");
+				$Consulta->AgregarCondicion("Estado != 'ELIMINADO'");
 				$Consulta->PrepararCantidadDatos('Cantidad');
-				$Data = $Consulta->ExecuteConsulta('GESTION');
-				if($Data>=1) {
-					return 'false';
-				}
-				else {
-					return 'true';
-				}
+				return $Consulta->ExecuteConsulta('GESTION');
 			}
 		}
 		
@@ -92,5 +124,15 @@
 		private function InsertarDatosAsesoresConsulta($Conexion, $Array) {
 			$Matriz = array_merge($Array, array('Estado' => 'ACTIVO'));
 			$Insertar = $Conexion->insert('tbl_gestion_asesores', $Matriz);
+		}
+		
+		public function ActivacionUsuario($Id = false, $Estado = false) {
+			if($Id == true AND $Estado == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_gestion_asesores');
+				$SQL->AgregarSentencia('Estado', $Estado);
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
 		}
 	}

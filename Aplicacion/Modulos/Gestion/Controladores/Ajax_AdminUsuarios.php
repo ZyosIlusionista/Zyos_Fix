@@ -63,26 +63,47 @@
 			}
 		}
 		
-		private function FunctionTwig_1($Columna = false, $Valor = false) {
-			if($Columna == true AND $Valor == true) {
-				if(empty($Valor) == false) {
-					if($Columna == '') {
-						
-					}
-				}
-				else {
-					return '<td style="background: red; color: white; font-weight: bold">No Hay Datos</td>';
-				}
-			}
-		}
-		
 		public function ActivacionUsuario($Validacion = false) {
 			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
 				if(AyudasPost::DatosVacios($_POST) == false) {
 					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
-					$Estado = ($DatosPost['Estado'] == 'ACTIVO') ? 'INACTIVO ' : 'ACTIVO';
+					$Estado = 'ACTIVO';
 					$this->Modelo->ActivacionUsuario($DatosPost['Asesor'], $Estado);
 					echo $Estado;
+				}
+			}
+		}
+		
+		public function DesActivacionUsuario($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$Estado = 'INACTIVO';
+					$this->Modelo->ActivacionUsuario($DatosPost['Asesor'], $Estado);
+					echo $Estado;
+				}
+			}
+		}
+		
+		public function ResetPassword($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
+				if(is_numeric($DatosPost['ID']) == true) {
+					$DatosPost['Datos'] = AyudasConversorHexAscii::HEX_ASCII($DatosPost['Datos']);
+					$this->Modelo->ResetPassword($DatosPost['Datos']);
+				}
+			}
+		}
+		
+		public function ActualizarDatosUsuarios($Validacion = false) {
+			if($Validacion == true AND NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($Validacion), array(date("Y-m-d"), 'GESTION')) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::ConvertirTextoUcwordsOmitido(AyudasPost::FormatoMinOmitido(AyudasPost::LimpiarInyeccionSQL($_POST), array('Data')), array('Data')));
+					$DatosPost['Data'] = NeuralEncriptacion::DesencriptarDatos($DatosPost['Data'], 'GESTION');
+					$this->Modelo->ActualizarDatosUsuarios($DatosPost);
+					$Plantilla = new NeuralPlantillasTwig;
+					$Plantilla->ParametrosEtiquetas('Nombre', $DatosPost['Nombres'].' '.$DatosPost['Apellidos']);
+					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/UsuarioActualizado.html', 'GESTION');
 				}
 			}
 		}
@@ -119,6 +140,18 @@
 					$Plantilla = new NeuralPlantillasTwig;
 					$Plantilla->ParametrosEtiquetas('No_Guardados', $Resultado);
 					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesoresExcel.html', 'GESTION');
+				}
+			}
+		}
+		
+		public function EliminarUsuario($Fecha = false) {
+			if($Fecha == true AND AyudasConversorHexAscii::HEX_ASCII($Fecha) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
+					$DatosPost['Datos'] = NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($DatosPost['Datos']), array(date("Y-m-d"), 'GESTION'));
+					if(is_numeric($DatosPost['Datos']) == true) {
+						$this->Modelo->EliminarUsuario($DatosPost['Datos']);
+					}
 				}
 			}
 		}
