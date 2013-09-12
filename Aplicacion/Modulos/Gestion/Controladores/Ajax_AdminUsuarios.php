@@ -111,6 +111,7 @@
 		public function ConsultarExistenciaAsesorRemote($Validacion = false) {
 			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
 				$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+				Ayudas::print_r($DatosPost);
 				if(AyudasPost::DatosVacios($DatosPost) == false) {
 					echo $this->Modelo->ConsultarExistenciaAsesorRemote($DatosPost['Usuario']);
 				}
