@@ -280,4 +280,46 @@
 				$SQL->ActualizarDatos();
 			}
 		}
+		
+		public function ListarSoftswitchTelefoniaTabla($Validacion = false) {
+			if($Validacion == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_base_softswitch');
+				$Consulta->AgregarColumnas(self::ListarColumnasTabla('tbl_base_softswitch'));
+				$Consulta->AgregarCondicion("Estado = 'ACTIVO'");
+				$Consulta->AgregarOrdenar('Nombre', 'ASC');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta('GESTION');
+			}
+		}
+		
+		public function AgregarSoftswitchTelefonia($Softswitch = false) {
+			if($Softswitch == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_softswitch');
+				$SQL->AgregarSentencia('Nombre', $Softswitch);
+				$SQL->AgregarSentencia('Estado', 'ACTIVO');
+				$SQL->InsertarDatos();
+			}
+		}
+		
+		public function TelefoniaSoftswitchEliminar($Id = false) {
+			if($Id == true AND is_numeric($Id) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_softswitch');
+				$SQL->AgregarSentencia('Estado', 'INACTIVO');
+				$SQL->AgregarCondicion('Id', $Id);
+				$SQL->ActualizarDatos();
+			}
+		}
+		
+		public function TelefoniaSoftswitchEditar($Array = false) {
+			if($Array == true AND is_array($Array) == true) {
+				$SQL = new NeuralBDGab;
+				$SQL->SeleccionarDestino('GESTION', 'tbl_base_softswitch');
+				$SQL->AgregarSentencia('Nombre', $Array['Nombre']);
+				$SQL->AgregarCondicion('Id', $Array['Id']);
+				$SQL->ActualizarDatos();
+			}
+		}
 	}

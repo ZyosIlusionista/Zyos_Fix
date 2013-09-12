@@ -267,4 +267,39 @@
 				}
 			}
 		}
+		
+		public function ListarSoftswitchTelefoniaTabla() {
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('Consulta', $this->Modelo->ListarSoftswitchTelefoniaTabla(true));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			echo $Plantilla->MostrarPlantilla('Ajax/AdminContenido/Telefonia/ListarSoftswitchTelefoniaTabla.html', 'GESTION');
+		}
+		
+		public function AgregarSoftswitchTelefonia($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->AgregarSoftswitchTelefonia($DatosPost['Softswitch']);
+				}
+			}
+		}
+		
+		public function TelefoniaSoftswitchEliminar($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->TelefoniaSoftswitchEliminar($DatosPost['Id']);
+				}
+			}
+		}
+		
+		public function TelefoniaSoftswitchEditar($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
+					$this->Modelo->TelefoniaSoftswitchEditar($DatosPost);
+				}
+			}
+		}
 	}
