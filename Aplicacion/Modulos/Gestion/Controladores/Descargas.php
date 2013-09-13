@@ -52,7 +52,7 @@
 									->setCellValue('F1', 'Apellidos del Asesor')
 									->setCellValue('G1', 'Usuario Experto')
 									->setCellValue('H1', 'Nombres del Experto')
-									->setCellValue('I1', 'Apellidos del experto')
+									->setCellValue('I1', 'Apellidos del Experto')
 									->setCellValue('J1', 'Tipo de Reporte')
 									->setCellValue('K1', 'Cuenta')
 									->setCellValue('L1', 'MAC')
@@ -72,30 +72,30 @@
 						for ($i=0; $i<$Consulta['Cantidad']; $i++) {
 							$Contador = $i+2;
 							$objPHPExcel->setActiveSheetIndex(0)
-										->setCellValue('A'.$Contador, $Consulta[$i]['Consecutivo'])
-										->setCellValue('B'.$Contador, $Consulta[$i]['Fecha'])
-										->setCellValue('C'.$Contador, $Consulta[$i]['Hora'])
-										->setCellValue('D'.$Contador, $Consulta[$i]['Asesor'])
-										->setCellValue('E'.$Contador, $Consulta[$i]['Nombres_Asesor'])
-										->setCellValue('F'.$Contador, $Consulta[$i]['Apellidos_Asesor'])
-										->setCellValue('G'.$Contador, $Consulta[$i]['Usuario'])
-										->setCellValue('H'.$Contador, $Consulta[$i]['Nombres_Usuario'])
-										->setCellValue('I'.$Contador, $Consulta[$i]['Apellidos_Usuarios'])
-										->setCellValue('J'.$Contador, $Consulta[$i]['Tipo_Reporte'])
-										->setCellValue('K'.$Contador, $Consulta[$i]['Cuenta'])
-										->setCellValue('L'.$Contador, $Consulta[$i]['MAC'])
-										->setCellValue('M'.$Contador, $Consulta[$i]['Marca'])
-										->setCellValue('N'.$Contador, $Consulta[$i]['Modelo'])
-										->setCellValue('O'.$Contador, $Consulta[$i]['Firmware'])
-										->setCellValue('P'.$Contador, $Consulta[$i]['Sintoma'])
-										->setCellValue('Q'.$Contador, $Consulta[$i]['Observaciones'])
-										->setCellValue('R'.$Contador, $Consulta[$i]['Seguimiento'])
-										->setCellValue('S'.$Contador, $Consulta[$i]['Softswitch'])
-										->setCellValue('T'.$Contador, $Consulta[$i]['Nodo'])
-										->setCellValue('U'.$Contador, $Consulta[$i]['Paquete'])
-										->setCellValue('V'.$Contador, $Consulta[$i]['Aviso'])
-										->setCellValue('W'.$Contador, $Consulta[$i]['CMTS'])
-										->setCellValue('X'.$Contador, $Consulta[$i]['IIMS_Paso']);
+										->setCellValue('A'.$Contador, self::FormatoDatos($Consulta[$i]['Consecutivo']))
+										->setCellValue('B'.$Contador, self::FormatoDatos($Consulta[$i]['Fecha']))
+										->setCellValue('C'.$Contador, self::FormatoDatos($Consulta[$i]['Hora']))
+										->setCellValue('D'.$Contador, self::FormatoDatos($Consulta[$i]['Asesor']))
+										->setCellValue('E'.$Contador, self::FormatoDatos($Consulta[$i]['Nombres_Asesor']))
+										->setCellValue('F'.$Contador, self::FormatoDatos($Consulta[$i]['Apellidos_Asesor']))
+										->setCellValue('G'.$Contador, self::FormatoDatos($Consulta[$i]['Usuario']))
+										->setCellValue('H'.$Contador, self::FormatoDatos($Consulta[$i]['Nombres_Usuario']))
+										->setCellValue('I'.$Contador, self::FormatoDatos($Consulta[$i]['Apellidos_Usuarios']))
+										->setCellValue('J'.$Contador, self::FormatoDatos($Consulta[$i]['Tipo_Reporte']))
+										->setCellValue('K'.$Contador, self::FormatoDatos($Consulta[$i]['Cuenta']))
+										->setCellValue('L'.$Contador, self::FormatoDatos($Consulta[$i]['MAC']))
+										->setCellValue('M'.$Contador, self::FormatoDatos($Consulta[$i]['Marca']))
+										->setCellValue('N'.$Contador, self::FormatoDatos($Consulta[$i]['Modelo']))
+										->setCellValue('O'.$Contador, self::FormatoDatos($Consulta[$i]['Firmware']))
+										->setCellValue('P'.$Contador, self::FormatoDatos($Consulta[$i]['Sintoma']))
+										->setCellValue('Q'.$Contador, self::FormatoDatos($Consulta[$i]['Observaciones']))
+										->setCellValue('R'.$Contador, self::FormatoDatos($Consulta[$i]['Seguimiento']))
+										->setCellValue('S'.$Contador, self::FormatoDatos($Consulta[$i]['Softswitch']))
+										->setCellValue('T'.$Contador, self::FormatoDatos($Consulta[$i]['Nodo']))
+										->setCellValue('U'.$Contador, self::FormatoDatos($Consulta[$i]['Paquete']))
+										->setCellValue('V'.$Contador, self::FormatoDatos($Consulta[$i]['Aviso']))
+										->setCellValue('W'.$Contador, self::FormatoDatos($Consulta[$i]['CMTS']))
+										->setCellValue('X'.$Contador, self::FormatoDatos($Consulta[$i]['IIMS_Paso']));
 						}
 						
 						$objPHPExcel->getActiveSheet()->setTitle('Base Dia '.$DatosPost['Fecha']);
@@ -119,6 +119,137 @@
 				else {
 					echo 'Hay Datos Vacios Validar la Informacion';
 				}
+			}
+		}
+		
+		public function Mensual() {
+			
+			$Validacion = new NeuralJQueryValidacionFormulario;
+			$Validacion->Requerido('Fecha', 'Seleccione La Fecha Correspondiente');
+			$Validacion->Fecha('Fecha', 'El Formato de Fecha debe Ser Año-Mes Ej: '.date("Y-m"));
+			$Script[] = $Validacion->MostrarValidacion('Form');
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Descarga Mensual');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			$Plantilla->ParametrosEtiquetas('Script', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
+			echo $Plantilla->MostrarPlantilla('Descargas/Mensual.html', 'GESTION');
+		}
+		
+		private static function getUltimoDiaMes($Fecha = false) {
+			if($Fecha == true) {
+				$Formato = explode("-", $Fecha);
+				return $Fecha.'-'.date("d",(mktime(0,0,0,$Formato[1]+1,1,$Formato[0])-1));
+			}
+		}
+		
+		public function ProcesarMensual($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
+				if(AyudasPost::DatosVacios($_POST) == false) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
+					$FechaInicio = $DatosPost['Fecha'].'01';
+					$FechaFin = self::getUltimoDiaMes($DatosPost['Fecha']);
+					$InfoSession = AyudasSessiones::InformacionSessionControlador(true);
+					$Consulta = $this->Modelo->Mensual($FechaInicio, $FechaFin);
+					if($Consulta['Cantidad']>=1) {
+						$objPHPExcel = new PHPExcel();
+						$objPHPExcel->getProperties()->setCreator($InfoSession['Nombre'])
+													->setLastModifiedBy($InfoSession['Nombre'])
+													->setTitle("Descarga de La Base del Mes ".$DatosPost['Fecha'])
+													->setSubject("Descarga de La Base del Mes ".$DatosPost['Fecha'])
+													->setDescription("Descarga de La Base del Mes ".$DatosPost['Fecha'])
+													->setKeywords("Base Mensual")
+													->setCategory("Base Mensual");
+													
+						$objPHPExcel->setActiveSheetIndex(0)
+									->setCellValue('A1', 'Consecutivo')
+									->setCellValue('B1', 'Fecha')
+									->setCellValue('C1', 'Hora')
+									->setCellValue('D1', 'Asesor')
+									->setCellValue('E1', 'Nombres del Asesor')
+									->setCellValue('F1', 'Apellidos del Asesor')
+									->setCellValue('G1', 'Usuario Experto')
+									->setCellValue('H1', 'Nombres del Experto')
+									->setCellValue('I1', 'Apellidos del Experto')
+									->setCellValue('J1', 'Tipo de Reporte')
+									->setCellValue('K1', 'Cuenta')
+									->setCellValue('L1', 'MAC')
+									->setCellValue('M1', 'Marca')
+									->setCellValue('N1', 'Modelo')
+									->setCellValue('O1', 'Firmware')
+									->setCellValue('P1', 'Sintoma')
+									->setCellValue('Q1', 'Observaciones')
+									->setCellValue('R1', 'Seguimiento')
+									->setCellValue('S1', 'Softswitch')
+									->setCellValue('T1', 'Nodo')
+									->setCellValue('U1', 'Paquete')
+									->setCellValue('V1', 'Aviso')
+									->setCellValue('W1', 'CMTS')
+									->setCellValue('X1', 'Paso del IIMS');
+									
+						for ($i=0; $i<$Consulta['Cantidad']; $i++) {
+							$Contador = $i+2;
+							$objPHPExcel->setActiveSheetIndex(0)
+										->setCellValue('A'.$Contador, self::FormatoDatos($Consulta[$i]['Consecutivo']))
+										->setCellValue('B'.$Contador, self::FormatoDatos($Consulta[$i]['Fecha']))
+										->setCellValue('C'.$Contador, self::FormatoDatos($Consulta[$i]['Hora']))
+										->setCellValue('D'.$Contador, self::FormatoDatos($Consulta[$i]['Asesor']))
+										->setCellValue('E'.$Contador, self::FormatoDatos($Consulta[$i]['Nombres_Asesor']))
+										->setCellValue('F'.$Contador, self::FormatoDatos($Consulta[$i]['Apellidos_Asesor']))
+										->setCellValue('G'.$Contador, self::FormatoDatos($Consulta[$i]['Usuario']))
+										->setCellValue('H'.$Contador, self::FormatoDatos($Consulta[$i]['Nombres_Usuario']))
+										->setCellValue('I'.$Contador, self::FormatoDatos($Consulta[$i]['Apellidos_Usuarios']))
+										->setCellValue('J'.$Contador, self::FormatoDatos($Consulta[$i]['Tipo_Reporte']))
+										->setCellValue('K'.$Contador, self::FormatoDatos($Consulta[$i]['Cuenta']))
+										->setCellValue('L'.$Contador, self::FormatoDatos($Consulta[$i]['MAC']))
+										->setCellValue('M'.$Contador, self::FormatoDatos($Consulta[$i]['Marca']))
+										->setCellValue('N'.$Contador, self::FormatoDatos($Consulta[$i]['Modelo']))
+										->setCellValue('O'.$Contador, self::FormatoDatos($Consulta[$i]['Firmware']))
+										->setCellValue('P'.$Contador, self::FormatoDatos($Consulta[$i]['Sintoma']))
+										->setCellValue('Q'.$Contador, self::FormatoDatos($Consulta[$i]['Observaciones']))
+										->setCellValue('R'.$Contador, self::FormatoDatos($Consulta[$i]['Seguimiento']))
+										->setCellValue('S'.$Contador, self::FormatoDatos($Consulta[$i]['Softswitch']))
+										->setCellValue('T'.$Contador, self::FormatoDatos($Consulta[$i]['Nodo']))
+										->setCellValue('U'.$Contador, self::FormatoDatos($Consulta[$i]['Paquete']))
+										->setCellValue('V'.$Contador, self::FormatoDatos($Consulta[$i]['Aviso']))
+										->setCellValue('W'.$Contador, self::FormatoDatos($Consulta[$i]['CMTS']))
+										->setCellValue('X'.$Contador, self::FormatoDatos($Consulta[$i]['IIMS_Paso']));
+						}
+						
+						$objPHPExcel->getActiveSheet()->setTitle('Base Mes '.$DatosPost['Fecha']);
+						$objPHPExcel->setActiveSheetIndex(0);
+						$NombreArchivo = $InfoSession['Usuario'].'_Mes_'.$InfoSession['Fecha']['wday'].'_'.$InfoSession['Fecha']['mday'].'_'.$InfoSession['Fecha']['mon'].'_'.$InfoSession['Fecha']['year'];
+						header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+						header("Content-Disposition: attachment;filename=\"$NombreArchivo.xlsx\"");
+						header('Cache-Control: max-age=0');
+						$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+						$objWriter->save('php://output');
+						exit();
+					}
+					else {
+						$Plantilla = new NeuralPlantillasTwig;
+						$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+						$Plantilla->ParametrosEtiquetas('Titulo', 'Descarga Diaria');
+						$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+						echo $Plantilla->MostrarPlantilla('Descargas/NoHayDatos.html', 'GESTION');
+					}
+				}
+				else {
+					echo 'Hay Datos Vacios Validar la Informacion';
+				}
+			}
+		}
+		
+		private function FormatoDatos($Valor) {
+			if($Valor == null) {
+				return 'NULL';
+			}
+			elseif(empty($Valor) == true) {
+				return 'NULL';
+			}
+			else {
+				return $Valor;
 			}
 		}
 	}
