@@ -113,20 +113,32 @@
 				$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::FormatoMayus(AyudasPost::LimpiarInyeccionSQL($_POST)));
 				Ayudas::print_r($DatosPost);
 				if(AyudasPost::DatosVacios($DatosPost) == false) {
-					echo $this->Modelo->ConsultarExistenciaAsesorRemote($DatosPost['Usuario']);
+					$Data = $this->Modelo->ConsultarExistenciaAsesorRemote($DatosPost['Usuario']);
+					if($Data['Cantidad']>=1) {
+						echo 'false';
+					}
+					else {
+						echo 'true';
+					}
 				}
 			}
 		}
 		
 		public function AgregarAsesor($Validacion = false) {
-			if($Validacion == true AND NeuralEncriptacion::DesencriptarDatos(AyudasConversorHexAscii::HEX_ASCII($Validacion), array(date("Y-m-d"), 'GESTION')) == date("Y-m-d")) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == date("Y-m-d")) {
 				if(AyudasPost::DatosVacios($_POST) == false) {
 					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::ConvertirTextoUcwords(AyudasPost::FormatoMin(AyudasPost::LimpiarInyeccionSQL($_POST))));
-					$this->Modelo->AgregarAsesor($DatosPost);
-					
-					$Plantilla = new NeuralPlantillasTwig;
-					$Plantilla->ParametrosEtiquetas('Nombre', $DatosPost['Nombres'].' '.$DatosPost['Apellidos']);
-					echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesorInsertado.html', 'GESTION');
+					if($this->Modelo->ConsultarExistenciaAsesorRemote($DatosPost['Usuario'])>=1) {
+						$Plantilla = new NeuralPlantillasTwig;
+						$Plantilla->ParametrosEtiquetas('Usuario', $DatosPost['Usuario']);
+						echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesorExiste.html', 'GESTION');
+					}
+					else {
+						$this->Modelo->AgregarAsesor($DatosPost);
+						$Plantilla = new NeuralPlantillasTwig;
+						$Plantilla->ParametrosEtiquetas('Nombre', $DatosPost['Nombres'].' '.$DatosPost['Apellidos']);
+						echo $Plantilla->MostrarPlantilla('Ajax/AdminUsuarios/AsesorInsertado.html', 'GESTION');
+					}
 				}
 			}
 		}

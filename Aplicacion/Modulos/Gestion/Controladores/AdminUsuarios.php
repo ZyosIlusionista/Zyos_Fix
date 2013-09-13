@@ -99,7 +99,6 @@
 			
 			$Validacion = new NeuralJQueryValidacionFormulario;
 			$Validacion->Requerido('Usuario', 'Ingrese Usuario Correspondiente');
-			$Validacion->Remote('Usuario', NeuralRutasApp::RutaURL('Ajax_AdminUsuarios/ConsultarExistenciaAsesorRemote/'.AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d"))), 'POST', 'El Usuario Ya Existe en la Base de Datos');
 			$Validacion->Requerido('Nombres', 'Ingrese los Nombres del Asesor');
 			$Validacion->Requerido('Apellidos', 'Ingrese los Apellidos del Asesor');
 			$Validacion->Requerido('Cedula', 'Ingrese la Cédula del Asesor');
@@ -111,7 +110,8 @@
 			$Plantilla = new NeuralPlantillasTwig;
 			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
 			$Plantilla->ParametrosEtiquetas('Titulo', 'Nuevo Asesor');
-			$Plantilla->ParametrosEtiquetas('Script', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
+			//$Plantilla->ParametrosEtiquetas('Script', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
 			echo $Plantilla->MostrarPlantilla('AdminUsuarios/NuevoAsesor.html', 'GESTION');
 		}
 		
