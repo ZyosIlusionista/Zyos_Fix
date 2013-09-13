@@ -5,6 +5,7 @@
 			if (!is_array($array) or !is_array($array[0])) return false;
 			//Header row.
 			if ($header_row) {
+				$output = '';
 				foreach ($array[0] as $key => $val) {
 					//Escaping quotes.
 					$key = str_replace($qut, "$qut$qut", $key);

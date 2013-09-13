@@ -5,6 +5,8 @@
 	{ "Activo":	true, "Ruta":"PHPMailer/class.phpmailer.php" },
 	"Twig":
 	{ "Activo":	false, "Ruta":"Twig/Autoloader.php" },
+	"PHPExcel":
+	{ "Activo":	true, "Ruta":"PHPExcel/Classes/PHPExcel.php" },
 	"PHPBenchmark":
 	{ "Activo":	true, "Ruta":"PHPBenchmark/Monitor.php" }
 }
