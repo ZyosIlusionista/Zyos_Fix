@@ -360,7 +360,11 @@
 					}
 				}
 				else {
-					echo 'Hay Datos Vacios Validar la Informacion';
+						$Plantilla = new NeuralPlantillasTwig;
+						$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+						$Plantilla->ParametrosEtiquetas('Titulo', 'Descarga Seguimientos');
+						$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+						echo $Plantilla->MostrarPlantilla('Descargas/NoHayDatos.html', 'GESTION');
 				}
 			}
 		}
