@@ -7,6 +7,8 @@
 	{ "Activo":	false, "Ruta":"Twig/Autoloader.php" },
 	"PHPExcel":
 	{ "Activo":	true, "Ruta":"PHPExcel/Classes/PHPExcel.php" },
+	"PHPExcel2":
+	{ "Activo":	true, "Ruta":"PHPExcel/Classes/PHPExcel/IOFactory.php" },
 	"PHPBenchmark":
 	{ "Activo":	true, "Ruta":"PHPBenchmark/Monitor.php" }
 }

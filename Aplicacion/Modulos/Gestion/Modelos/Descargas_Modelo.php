@@ -47,4 +47,64 @@
 				return $Consulta->ExecuteConsulta('GESTION');
 			}
 		}
+		
+		public function Seguimiento($FechaInicio = false, $FechaFin = false, $Estado = false, $Conexion = false) {
+			if($FechaInicio == true AND $FechaFin == true AND $Estado == true AND $Conexion == true) {
+				return self::ListadoSeguimientos($FechaInicio, $FechaFin, $Estado, $Conexion);
+			}
+		}
+		
+		private function ListadoSeguimientos($FechaInicio = false, $FechaFin = false, $Estado = false, $Conexion = false) {
+			
+			$Consulta = new NeuralBDConsultas;
+			$Consulta->CrearConsulta('tbl_gestion_seguimiento');
+			$Consulta->CrearConsulta('tbl_sistema_usuarios');
+			$Consulta->AgregarColumnas('tbl_gestion_seguimiento.Id AS Consecutivo_Seguimiento, tbl_gestion_seguimiento.Fecha_Inicio, tbl_gestion_seguimiento.Fecha_Fin, tbl_gestion_seguimiento.Registro, tbl_gestion_seguimiento.Observaciones, tbl_gestion_seguimiento.TipoReporte, tbl_gestion_seguimiento.Estado');
+			$Consulta->AgregarColumnas('tbl_gestion_seguimiento.Usuario AS Experto, tbl_sistema_usuarios.Nombres AS Nombre, tbl_sistema_usuarios.Apellidos AS Apellido');
+			if($Estado == 'ACTIVO' OR $Estado == 'INACTIVO') {
+				$Consulta->AgregarCondicion("tbl_gestion_seguimiento.Estado = '$Estado'");
+			}
+			$Consulta->AgregarCondicion("tbl_gestion_seguimiento.Fecha_Inicio BETWEEN '$FechaInicio' AND '$FechaFin'");
+			$Consulta->AgregarCondicion("tbl_gestion_seguimiento.Usuario = tbl_sistema_usuarios.Usuario");
+			$Consulta->AgregarOrdenar('tbl_gestion_seguimiento.Fecha_Inicio', 'ASC');
+			$Consulta->PrepararCantidadDatos('Cantidad');
+			$Consulta->PrepararQuery();
+			return $Consulta->ExecuteConsulta($Conexion);
+			
+		}
+		
+		public function Notas($FechaInicio = false, $FechaFin = false, $Array = false, $Conexion = false) {
+			if($FechaInicio == true AND $FechaFin == true AND $Array == true AND $Conexion == true) {
+				if($Array['Cantidad']>=1) {
+					for ($App=0; $App<$Array['Cantidad']; $App++) {
+						$Data = self::ConsultaNotas($Conexion, $Array[$App]['Registro']);
+						if ($Data['Cantidad']>=1) {
+							for ($App2=0; $App2<$Data['Cantidad']; $App2++) {
+								$Lista[] = $Data[$App2];
+							}
+						}
+					}
+					
+					if(isset($Lista) == true AND is_array($Lista)) {
+						return array_merge(array('Cantidad' => count($Lista)), $Lista);
+					}
+					else {
+						return array('Cantidad' => '0');
+					}
+				}
+			}
+		}
+		
+		private function ConsultaNotas($Conexion = false, $Registro = false) {
+			if($Conexion == true AND $Registro == true) {
+				$Consulta = new NeuralBDConsultas;
+				$Consulta->CrearConsulta('tbl_gestion_seguimiento_notas');
+				$Consulta->AgregarColumnas('tbl_gestion_seguimiento_notas.Id, tbl_gestion_seguimiento_notas.Registro, tbl_gestion_seguimiento_notas.Notas, tbl_gestion_seguimiento_notas.Fecha, tbl_gestion_seguimiento_notas.Hora, tbl_gestion_seguimiento_notas.Usuario');
+				$Consulta->AgregarCondicion("tbl_gestion_seguimiento_notas.Registro = '$Registro'");
+				$Consulta->AgregarOrdenar('tbl_gestion_seguimiento_notas.Fecha ASC, tbl_gestion_seguimiento_notas.Hora', 'ASC');
+				$Consulta->PrepararCantidadDatos('Cantidad');
+				$Consulta->PrepararQuery();
+				return $Consulta->ExecuteConsulta($Conexion);
+			}
+		}
 	}

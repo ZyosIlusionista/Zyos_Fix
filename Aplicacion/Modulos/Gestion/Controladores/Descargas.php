@@ -252,4 +252,116 @@
 				return $Valor;
 			}
 		}
+		
+		public function Seguimientos() {
+			
+			$Validacion = new NeuralJQueryValidacionFormulario;
+			$Validacion->Requerido('Fecha', 'Seleccione La Fecha Correspondiente');
+			$Validacion->Fecha('Fecha', 'El Formato de Fecha debe Ser Año-Mes Ej: '.date("Y-m"));
+			$Script[] = $Validacion->MostrarValidacion('Form');
+			
+			$Plantilla = new NeuralPlantillasTwig;
+			$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+			$Plantilla->ParametrosEtiquetas('Titulo', 'Descarga Seguimientos');
+			$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+			$Plantilla->ParametrosEtiquetas('Script', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
+			echo $Plantilla->MostrarPlantilla('Descargas/Seguimientos.html', 'GESTION');
+		}
+		
+		public function ProcesarSeguimientos($Validacion = false) {
+			if($Validacion == true AND AyudasConversorHexAscii::HEX_ASCII($Validacion) == true) {
+				if(AyudasPost::DatosVacios($_POST) == false AND isset($_POST) == true) {
+					$DatosPost = AyudasPost::FormatoEspacio(AyudasPost::LimpiarInyeccionSQL($_POST));
+					$FechaInicio = $DatosPost['Fecha'].'-01';
+					$FechaFin = self::getUltimoDiaMes($DatosPost['Fecha']);
+					$InfoSession = AyudasSessiones::InformacionSessionControlador(true);
+					$Conexion = NeuralConexionBaseDatos::ObtenerConexionBase('GESTION');
+					$Consulta = $this->Modelo->Seguimiento($FechaInicio, $FechaFin, $DatosPost['Estado'], $Conexion);
+					$Notas = $this->Modelo->Notas($FechaInicio, $FechaFin, $Consulta, $Conexion);
+					//Ayudas::print_r($Consulta);
+					//Ayudas::print_r($Notas);
+					if($Consulta['Cantidad']>=1) {
+						$objPHPExcel = new PHPExcel();
+						$objPHPExcel->getProperties()->setCreator($InfoSession['Nombre'])
+													->setLastModifiedBy($InfoSession['Nombre'])
+													->setTitle("Descarga de Seguimientos del Mes ".$DatosPost['Fecha'])
+													->setSubject("Descarga de Seguimientos del Mes ".$DatosPost['Fecha'])
+													->setDescription("Descarga de Seguimientos del Mes ".$DatosPost['Fecha'])
+													->setKeywords("Base Seguimientos")
+													->setCategory("Base Seguimientos");
+						//Seguimientos Notas
+						if($Notas['Cantidad']>=1) {
+							$objPHPExcel->setActiveSheetIndex(0)
+										->setCellValue('A1', 'Id Nota')
+										->setCellValue('B1', 'Registro')
+										->setCellValue('C1', 'Notas')
+										->setCellValue('D1', 'Fecha')
+										->setCellValue('E1', 'Hora')
+										->setCellValue('F1', 'Usuario');
+							for ($j=0; $j<$Notas['Cantidad']; $j++) {
+								$Contador = $j+2;
+								$objPHPExcel->setActiveSheetIndex(0)
+											->setCellValue('A'.$Contador, self::FormatoDatos($Notas[$j]['Id']))
+											->setCellValue('B'.$Contador, self::FormatoDatos($Notas[$j]['Registro']))
+											->setCellValue('C'.$Contador, self::FormatoDatos($Notas[$j]['Notas']))
+											->setCellValue('D'.$Contador, self::FormatoDatos($Notas[$j]['Fecha']))
+											->setCellValue('E'.$Contador, self::FormatoDatos($Notas[$j]['Hora']))
+											->setCellValue('F'.$Contador, self::FormatoDatos($Notas[$j]['Usuario']));
+							}
+							$objPHPExcel->getActiveSheet()->setTitle('Notas Seguimientos');
+							$objPHPExcel->setActiveSheetIndex(0);
+							$objPHPExcel->createSheet();
+						}
+						
+						$objPHPExcel->setActiveSheetIndex(1)
+									->setCellValue('A1', 'Consecutivo Seguimiento')
+									->setCellValue('B1', 'Fecha de Inicio')
+									->setCellValue('C1', 'Fecha de Finalización')
+									->setCellValue('D1', 'Registro')
+									->setCellValue('E1', 'Observaciones')
+									->setCellValue('F1', 'Tipo de Reporte')
+									->setCellValue('G1', 'Estado')
+									->setCellValue('H1', 'Usuario Experto')
+									->setCellValue('I1', 'Nombre del Experto')
+									->setCellValue('J1', 'Apellidos del Experto');
+						
+						for ($i=0; $i<$Consulta['Cantidad']; $i++) {
+							$Contador = $i+2;
+							$objPHPExcel->setActiveSheetIndex(1)
+										->setCellValue('A'.$Contador, self::FormatoDatos($Consulta[$i]['Consecutivo_Seguimiento']))
+										->setCellValue('B'.$Contador, self::FormatoDatos($Consulta[$i]['Fecha_Inicio']))
+										->setCellValue('C'.$Contador, self::FormatoDatos($Consulta[$i]['Fecha_Fin']))
+										->setCellValue('D'.$Contador, self::FormatoDatos($Consulta[$i]['Registro']))
+										->setCellValue('E'.$Contador, self::FormatoDatos($Consulta[$i]['Observaciones']))
+										->setCellValue('F'.$Contador, self::FormatoDatos($Consulta[$i]['TipoReporte']))
+										->setCellValue('G'.$Contador, self::FormatoDatos($Consulta[$i]['Estado']))
+										->setCellValue('H'.$Contador, self::FormatoDatos($Consulta[$i]['Experto']))
+										->setCellValue('I'.$Contador, self::FormatoDatos($Consulta[$i]['Nombre']))
+										->setCellValue('J'.$Contador, self::FormatoDatos($Consulta[$i]['Apellido']));
+						}
+						
+						$objPHPExcel->getActiveSheet()->setTitle('Base Seguimiento '.$DatosPost['Fecha']);
+						$objPHPExcel->setActiveSheetIndex(1);
+						
+						$NombreArchivo = $InfoSession['Usuario'].'_Seguimientos_'.$InfoSession['Fecha']['wday'].'_'.$InfoSession['Fecha']['mday'].'_'.$InfoSession['Fecha']['mon'].'_'.$InfoSession['Fecha']['year'];
+						header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+						header("Content-Disposition: attachment;filename=\"$NombreArchivo.xlsx\"");
+						header('Cache-Control: max-age=0');
+						$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+						$objWriter->save('php://output');
+						exit();
+					}
+					else {
+						$Plantilla = new NeuralPlantillasTwig;
+						$Plantilla->ParametrosEtiquetas('InfoSession', AyudasSessiones::InformacionSessionControlador(true));
+						$Plantilla->ParametrosEtiquetas('Titulo', 'Descarga Seguimientos');
+						$Plantilla->ParametrosEtiquetas('Fecha', AyudasConversorHexAscii::ASCII_HEX(date("Y-m-d")));
+						echo $Plantilla->MostrarPlantilla('Descargas/NoHayDatos.html', 'GESTION');
+					}
+				}
+				else {
+					echo 'Hay Datos Vacios Validar la Informacion';
+				}
+			}
+		}
 	}
