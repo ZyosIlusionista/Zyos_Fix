@@ -13,7 +13,7 @@
 		},
 		"Configuracion":
 		{
-			"Entorno_Desarrollo": 	false,
+			"Entorno_Desarrollo": 	true,
 			"Llave_Encriptacion":	"N3ur4l3ncr1pt4c10n",
 			"Codificacion":			"Content-Type: text/html; charset=UTF-8"
 		}
@@ -32,7 +32,7 @@
 		},
 		"Configuracion":
 		{
-			"Entorno_Desarrollo": 	false,
+			"Entorno_Desarrollo": 	true,
 			"Llave_Encriptacion":	"N3ur4l3ncr1pt4c10n11",
 			"Codificacion":			"Content-Type: text/html; charset=UTF-8"
 		}

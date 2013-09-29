@@ -22,6 +22,7 @@
 					'MICLARO' => 'Sintoma de Mi Claro',
 					'MASIVOS' => 'Sintoma de Reportes Masivos',
 					'LLS' => 'Sintoma de Llamadas de Servicio',
+					'LLS_SA' => 'Servicio Afectado Llamadas de Servicio',
 					'IIMS' => 'Sintoma de Pasos IIMS'
 				);
 				

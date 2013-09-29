@@ -80,18 +80,18 @@
 						Sintoma: {required: "Ingrese el Servicio Afectado Correspondiente"}
 					},
 				submitHandler: function(form) {
-					var Marca = $("#Marca").val();
-					var Firmware = $("#Firmware").val();
+					var Sintoma = $("#Sintoma").val();
 					$.ajax({
 						type: "POST", 
 						url: "{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/LLSagregarServicioAfectado/{{Fecha}}", 
 						dataType: "html", 
-						data: { Marca : Marca, Firmware : Firmware}, 
+						data: { Sintoma : Sintoma}, 
 						beforeSend:function(){
 							$("#ContenidoModems").html('<div style="border: 0px; font-family: verdana; text-align: center;"><img src="{{NeuralRutasApp.RutaPublico}}img/plugins/xeditable/loading.gif" alt="" style="border: 0px; font-family: verdana; width: 25px; height: 25px; text-align: center;" /></div>');
 						},
-						success: function(){
+						success: function(response){
 							$("#ContenidoModems").load("{{NeuralRutasApp.RutaURL}}Ajax_AdminContenido/LLSListadoServicioAfectado");
+							//$("#ContenidoModems").html(response);
 						}
 					})
 					}
