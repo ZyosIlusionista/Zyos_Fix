@@ -218,7 +218,7 @@
 				$Plantilla->ParametrosEtiquetas('Titulo', 'Selección de Gestión');
 				$Plantilla->ParametrosEtiquetas('CantidadAsesor', $this->Modelo->ConsultarAsesor($Asesor));
 				$Plantilla->ParametrosEtiquetas('Asesor', $Asesor);
-				$Plantilla->ParametrosEtiquetas('Sintomas', $this->Modelo->ListadoSintomas('TIPOAVISO'));
+				$Plantilla->ParametrosEtiquetas('Sintomas', $this->Modelo->ListadoSintomas('MASIVOS'));
 				$Plantilla->ParametrosEtiquetas('Fecha', date("Y-m-d"));
 				$Plantilla->ParametrosEtiquetas('BaseScript', NeuralScriptAdministrador::OrganizarScript(false, $Script, 'GESTION'));
 				$Plantilla->AgregarFuncionAnonima('Codificacion', function ($Texto) {
